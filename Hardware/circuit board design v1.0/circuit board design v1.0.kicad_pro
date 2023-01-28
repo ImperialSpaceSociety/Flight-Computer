@@ -420,7 +420,15 @@
       "MCU"
     ],
     [
-      "8e330075-8519-4590-9420-bffcbb9dc43b",
+      "0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9",
+      "Sensors"
+    ],
+    [
+      "5a4d8c5a-da32-47cd-8dfd-858fccee0cc7",
+      "Power"
+    ],
+    [
+      "91cf0010-9ee0-4eb5-a57e-e0ac00755c97",
       "GPS"
     ]
   ],
