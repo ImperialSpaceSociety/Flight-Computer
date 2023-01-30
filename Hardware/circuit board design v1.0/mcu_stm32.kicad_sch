@@ -403,8 +403,8 @@
     (property "Datasheet" "https://docs.rs-online.com/16ce/0900766b815934ae.pdf" (id 3) (at 234.95 116.84 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "" (uuid ffa32878-fdcd-423e-a46b-d5abcddf227e))
-    (pin "" (uuid ffa32878-fdcd-423e-a46b-d5abcddf227e))
+    (pin "" (uuid ffa32878-fdcd-423e-a46b-d5abcddf227f))
+    (pin "" (uuid ffa32878-fdcd-423e-a46b-d5abcddf227f))
   )
 
   (symbol (lib_id "Components:W25Q64JVSS") (at 233.68 77.47 0) (unit 1)
