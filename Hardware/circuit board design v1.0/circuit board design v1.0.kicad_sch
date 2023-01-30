@@ -65,6 +65,69 @@
   )
 
   (symbol_instances
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/73fb8e2d-3b8a-4274-b7b3-da0b75ae8f87"
+      (reference "#FLG?") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/c1196ddf-17fb-4df6-8d28-69daa69a3511"
+      (reference "#FLG?") (unit 1) (value "PWR_FLAG") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/08aeac21-7699-4d2b-aef1-4919dddff50c"
+      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/1fe0f843-f74c-424a-ab04-ee1e9d27a10f"
+      (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/2089fda6-4f47-4e7f-91dd-f604b3f350f9"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/344f6c00-7c26-47ec-979d-852a4539b089"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/3975a517-85d0-4096-b602-472abd03ef7e"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/5fb14000-4295-4339-887a-315f8fdceb49"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/6b646404-a4c9-4121-acde-51301d3172fb"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/8de4c686-70bd-4a0e-b6f4-7374a9df5098"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/9791f08e-7fdc-48eb-b890-ac1c6195ae2d"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/a78aa72c-9646-4992-9118-4f9a066ef6d6"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/c6563d16-7e65-4d9a-ad21-68457113e7bc"
+      (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/3f6a7c86-e869-4024-bee2-8bf80d926890"
+      (reference "C?") (unit 1) (value "C_Small") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/f98ab185-94e9-40cf-9d6c-3ae73650ab00"
+      (reference "C?") (unit 1) (value "C_Small") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/bba0d31a-418a-4e8f-83f7-a25be8737299"
+      (reference "D?") (unit 1) (value "DFLS130L") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/4d2bb4b0-16f1-4eb1-8faf-08e167b6ae76"
+      (reference "J?") (unit 1) (value "USB_B_Micro") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/fdd44059-1076-4330-8349-8d7c54041faa"
+      (reference "J?") (unit 1) (value "Conn_01x02_Male") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/6e47decb-b55e-44c4-97b8-fdfbf97ed706"
+      (reference "R?") (unit 1) (value "R") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/cd0325bf-017b-4405-86e3-58707b9fe851"
+      (reference "R?") (unit 1) (value "R") (footprint "")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/3731e045-8a7d-4d8e-aaaf-5960b5e3acb5"
+      (reference "U?") (unit 1) (value "NCP161ASN180T1G") (footprint "Components:SOT95P280X145-5N")
+    )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/4d468306-9ceb-4a69-b007-fa8ae388cbdd"
       (reference "U?") (unit 1) (value "SDR08540M3-01") (footprint "")
     )
@@ -73,6 +136,12 @@
     )
     (path "/91cf0010-9ee0-4eb5-a57e-e0ac00755c97/712bd423-afa1-4088-9564-2d6002f8925c"
       (reference "U?") (unit 1) (value "L80-R") (footprint "RF_GPS:Quectel_L80-R")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/773ac51c-0824-4b2e-94d9-d64abcff076a"
+      (reference "U?") (unit 1) (value "STF202-22T1G") (footprint "Components:STF202-22T1G")
+    )
+    (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/9b8aba85-8d4c-44c8-8a42-f8e8521e6eb3"
+      (reference "U?") (unit 1) (value "MAX40203_SOT23") (footprint "Package_TO_SOT_SMD:SOT-23-5")
     )
     (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/ed71ed88-8cab-4422-86f8-4a2a4f8c82ab"
       (reference "U?") (unit 1) (value "BME280") (footprint "Package_LGA:Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering")
