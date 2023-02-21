@@ -18,6 +18,14 @@
     (property "Sheet file" "sensors.kicad_sch" (id 1) (at 200.66 94.5646 0)
       (effects (font (size 1.27 1.27)) (justify left top))
     )
+    (pin "SCL" bidirectional (at 200.66 67.31 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 0480b4c4-5e78-4d41-b77f-b307df2e5b8b)
+    )
+    (pin "SDA" bidirectional (at 200.66 72.39 180)
+      (effects (font (size 1.27 1.27)) (justify left))
+      (uuid 860cbbc5-e272-4298-8ae7-0a38d3f35bc5)
+    )
   )
 
   (sheet (at 44.45 114.3) (size 46.99 41.91) (fields_autoplaced)
@@ -74,11 +82,17 @@
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/08aeac21-7699-4d2b-aef1-4919dddff50c"
       (reference "#PWR?") (unit 1) (value "VBUS") (footprint "")
     )
+    (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/0ed6d568-4ff0-4706-981e-644385d4eeaf"
+      (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
+    )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/1fe0f843-f74c-424a-ab04-ee1e9d27a10f"
       (reference "#PWR?") (unit 1) (value "+3.3V") (footprint "")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/2089fda6-4f47-4e7f-91dd-f604b3f350f9"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/275e6250-f94b-40a1-8230-c43fb0e7da95"
+      (reference "#PWR?") (unit 1) (value "+3.3VA") (footprint "")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/344f6c00-7c26-47ec-979d-852a4539b089"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
@@ -86,10 +100,16 @@
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/3975a517-85d0-4096-b602-472abd03ef7e"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
+    (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/443886d2-fb55-4fd8-8135-83f1c746e9db"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/5fb14000-4295-4339-887a-315f8fdceb49"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/6b646404-a4c9-4121-acde-51301d3172fb"
+      (reference "#PWR?") (unit 1) (value "GND") (footprint "")
+    )
+    (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/75c84ad0-9e28-4279-b064-0beebeaa0453"
       (reference "#PWR?") (unit 1) (value "GND") (footprint "")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/8de4c686-70bd-4a0e-b6f4-7374a9df5098"
