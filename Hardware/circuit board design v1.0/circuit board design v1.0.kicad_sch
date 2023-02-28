@@ -283,7 +283,7 @@
       (reference "J2") (unit 1) (value "Conn_01x02_Male") (footprint "")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/8c3483d6-21f9-4d68-878f-71b6b407e760"
-      (reference "Q?") (unit 1) (value "2N7002-7-F") (footprint "SOT96P240X120-3N")
+      (reference "Q?") (unit 1) (value "2N7002-7-F") (footprint "Components:SOT96P240X120-3N")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/cd0325bf-017b-4405-86e3-58707b9fe851"
       (reference "R1") (unit 1) (value "R") (footprint "")
