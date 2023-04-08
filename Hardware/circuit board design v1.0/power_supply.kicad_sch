@@ -2106,7 +2106,7 @@
     (uuid 4c1f332c-8bba-42c9-b90b-d64280804d9b)
     (property "Reference" "J2" (id 0) (at 91.44 93.98 0))
     (property "Value" "Conn_01x02" (id 1) (at 91.44 96.52 0))
-    (property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (id 2) (at 91.44 102.87 0)
+    (property "Footprint" "Components:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical" (id 2) (at 91.44 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 91.44 102.87 0)

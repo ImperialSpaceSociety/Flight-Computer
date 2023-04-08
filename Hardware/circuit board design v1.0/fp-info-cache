@@ -1,4 +1,4 @@
-20532199728545663
+20538929477977927
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6258,6 +6258,27 @@ ECS-80-8-33Q-ADS-TR3 Crystal
 4
 4
 Components
+JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical
+JST PH series connector, B2B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator
+connector JST PH side entry
+0
+2
+2
+Components
+JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical
+JST PH series connector, B4B-PH-K (http://www.jst-mfg.com/product/pdf/eng/ePH.pdf), generated with kicad-footprint-generator
+connector JST PH side entry
+0
+4
+4
+Components
+LQFP-64_10x10mm_P0.5mm
+LQFP, 64 Pin (https://www.analog.com/media/en/technical-documentation/data-sheets/ad7606_7606-6_7606-4.pdf), generated with kicad-footprint-generator ipc_gullwing_generator.py
+LQFP QFP
+0
+64
+64
+Components
 MOLEX_105017-0001
 
 
@@ -6306,6 +6327,13 @@ STF202-22T1G
 0
 6
 6
+Components
+W25Q64JVSSIQ
+
+
+0
+8
+8
 Connector
 Banana_Jack_1Pin
 Single banana socket, footprint - 6mm drill

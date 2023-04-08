@@ -380,8 +380,8 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
-      "vrml": ""
+      "step": "circuit board design v1.0.step",
+      "vrml": "circuit board design v1.0.wrl"
     },
     "page_layout_descr_file": ""
   },

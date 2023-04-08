@@ -24,9 +24,14 @@
   (fp_line (start -1.5 -0.965) (end 1.5 -0.965) (layer "F.Fab") (width 0.15) (tstamp c1738c27-09f4-4271-8a29-e78ccd4483d9))
   (pad "1" smd rect (at 0.849999 0) (size 2.4 1.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp 54ffd6d4-79df-4559-877a-547f48c030da))
   (pad "2" smd rect (at -1.525 0) (size 1.05 1.5) (layers "F.Cu" "F.Paste" "F.Mask") (tstamp c5724ca0-a593-49b0-87c9-1b49f232f28c))
-  (model "eec.models/Diodes_Inc_-_DFLT27A-7.step"
+  (model "eec.models/Diodes_Inc_-_DFLT27A-7.step" hide
     (offset (xyz 0 0 0))
     (scale (xyz 1 1 1))
-    (rotate (xyz 0 0 0))
+    (rotate (xyz 90 90 0))
+  )
+  (model "${KIPRJMOD}/Component_3d_models/DFLT27A-7.stp"
+    (offset (xyz 1.3 0.9 0))
+    (scale (xyz 1 1 1))
+    (rotate (xyz -90 0 90))
   )
 )
