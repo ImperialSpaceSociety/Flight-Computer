@@ -2806,7 +2806,7 @@
     (uuid e0eee924-6a94-4485-a584-224d836dfad3)
     (property "Reference" "J1" (id 0) (at 50.165 43.18 0))
     (property "Value" "Conn_01x06_Male" (id 1) (at 50.165 45.72 0))
-    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" (id 2) (at 49.53 53.34 0)
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" (id 2) (at 49.53 53.34 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 49.53 53.34 0)
