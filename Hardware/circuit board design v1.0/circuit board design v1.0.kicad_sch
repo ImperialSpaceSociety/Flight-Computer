@@ -443,13 +443,13 @@
       (reference "J1") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/4c1f332c-8bba-42c9-b90b-d64280804d9b"
-      (reference "J2") (unit 1) (value "Conn_01x02") (footprint "Components:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical")
+      (reference "J2") (unit 1) (value "Conn_01x02") (footprint "Components:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/26774a6b-c9fc-487d-b24c-55fe316edce7"
       (reference "J3") (unit 1) (value "105017-0001") (footprint "MOLEX_105017-0001")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/71e9a856-f24b-40f9-ad40-3d2bf59b11f7"
-      (reference "J4") (unit 1) (value "Conn_01x04") (footprint "Components:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical")
+      (reference "J4") (unit 1) (value "Conn_01x04") (footprint "Components:JST_PH_S4B-PH-K_1x04_P2.00mm_Horizontal")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/8c3483d6-21f9-4d68-878f-71b6b407e760"
       (reference "Q1") (unit 1) (value "2N7002-7-F") (footprint "Components:SOT96P240X120-3N")
