@@ -525,7 +525,12 @@
       (net 53 "GND") (pinfunction "Pin_1") (pintype "passive") (tstamp 5e383fdf-b1fe-4aac-aa01-2a17aadd973d))
     (pad "2" thru_hole oval (at 2 0 90) (size 1.2 1.75) (drill 0.75) (layers *.Cu *.Mask)
       (net 78 "Net-(J2-Pad2)") (pinfunction "Pin_2") (pintype "passive") (tstamp 2245488a-32e6-4871-a44d-c520d41427af))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal.wrl"
+    (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal.wrl" hide
+      (offset (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
+    (model "${KIPRJMOD}/Component_3d_models/JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
@@ -1310,7 +1315,12 @@
       (net 22 "/MCU/SPI1_MOSI") (pinfunction "Pin_3") (pintype "passive") (tstamp 6adaf4ab-a337-41a7-bc3a-6522b42ccf27))
     (pad "4" thru_hole oval (at 6 0 90) (size 1.2 1.75) (drill 0.75) (layers *.Cu *.Mask)
       (net 23 "/MCU/Radio_Enable") (pinfunction "Pin_4") (pintype "passive") (tstamp 5ce753a3-1459-4a8f-bc4f-c091582c3098))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_PH_S4B-PH-K_1x04_P2.00mm_Horizontal.wrl"
+    (model "${KICAD6_3DMODEL_DIR}/Connector_JST.3dshapes/JST_PH_S4B-PH-K_1x04_P2.00mm_Horizontal.wrl" hide
+      (offset (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
+    (model "${KIPRJMOD}/Component_3d_models/JST_PH_S4B-PH-K_1x04_P2.00mm_Horizontal.step"
       (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
