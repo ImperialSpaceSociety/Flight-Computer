@@ -423,7 +423,7 @@
     (property "Reference" "U8" (id 0) (at 129.0194 90.17 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "L80-R" (id 1) (at 129.0194 92.71 0)
+    (property "Value" "L80-M39" (id 1) (at 129.0194 92.71 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Components:Quectel_L80-R" (id 2) (at 127 100.33 0)
