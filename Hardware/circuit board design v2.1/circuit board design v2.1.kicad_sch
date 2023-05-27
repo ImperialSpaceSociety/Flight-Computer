@@ -562,7 +562,7 @@
       (reference "R5") (unit 1) (value "4.7k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/fd81fc55-5742-4962-94a2-e96f6dff2f8e"
-      (reference "R6") (unit 1) (value "R_0603") (footprint "Components:R_0603_1608Metric")
+      (reference "R6") (unit 1) (value "3.3k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/e3bd3bf9-86b4-4609-ab40-6a41bd8f9153"
       (reference "R7") (unit 1) (value "R_0603") (footprint "Components:R_0603_1608Metric")
