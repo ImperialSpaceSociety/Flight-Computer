@@ -374,9 +374,9 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
@@ -388,6 +388,12 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : Acc_Int1_Pin Gyro_Int3_Pin Mag_Data_Ready_Pin */
+  GPIO_InitStruct.Pin = Acc_Int1_Pin|Gyro_Int3_Pin|Mag_Data_Ready_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Radio_DIO1_Pin Radio_DIO0_Pin Radio_TX_Pin */
   GPIO_InitStruct.Pin = Radio_DIO1_Pin|Radio_DIO0_Pin|Radio_TX_Pin;

@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.Rel1)
+# Toolchain: GNU Tools for STM32 (11.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -64,8 +64,8 @@ all: main-build
 main-build: revision_1.elf secondary-outputs
 
 # Tool invocations
-revision_1.elf revision_1.map: $(OBJS) $(USER_OBJS) C:\Users\timot\STM32CubeIDE\workspace_1.11.2\revision_1\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "revision_1.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\timot\STM32CubeIDE\workspace_1.11.2\revision_1\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="revision_1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+revision_1.elf revision_1.map: $(OBJS) $(USER_OBJS) C:\Users\timot\Documents\Programming\SpaceSoc\Flight-Computer\Software\revision_1\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "revision_1.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\timot\Documents\Programming\SpaceSoc\Flight-Computer\Software\revision_1\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="revision_1.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

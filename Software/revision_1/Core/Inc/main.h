@@ -57,6 +57,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Acc_Int1_Pin GPIO_PIN_14
+#define Acc_Int1_GPIO_Port GPIOC
+#define Gyro_Int3_Pin GPIO_PIN_15
+#define Gyro_Int3_GPIO_Port GPIOC
 #define Radio_DIO1_Pin GPIO_PIN_0
 #define Radio_DIO1_GPIO_Port GPIOA
 #define Radio_DIO0_Pin GPIO_PIN_1
@@ -81,6 +85,8 @@ void Error_Handler(void);
 #define Flash_QUADSPI_CLK_GPIO_Port GPIOB
 #define Radio_Reset_Pin GPIO_PIN_12
 #define Radio_Reset_GPIO_Port GPIOB
+#define Mag_Data_Ready_Pin GPIO_PIN_8
+#define Mag_Data_Ready_GPIO_Port GPIOC
 #define Flash_QUADSPI_BK1_IO0_Pin GPIO_PIN_9
 #define Flash_QUADSPI_BK1_IO0_GPIO_Port GPIOC
 #define USB_D__Pin GPIO_PIN_11
