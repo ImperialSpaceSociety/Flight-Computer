@@ -610,6 +610,12 @@
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/3ec3363d-d0bd-4291-ac89-97e625e49bab"
       (reference "J6") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
+    (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/7260ac4a-bea0-4ca3-b789-ce94c8aaacf5"
+      (reference "JP1") (unit 1) (value "SolderJumper_2_Open") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
+    )
+    (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/014769df-7e0f-4801-8e2a-eb4c587230fe"
+      (reference "JP2") (unit 1) (value "SolderJumper_2_Open") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
+    )
     (path "/707d4321-6a5f-431a-bddf-316d812079af"
       (reference "L1") (unit 1) (value "Logo") (footprint "Components:ICSS_Logo")
     )
