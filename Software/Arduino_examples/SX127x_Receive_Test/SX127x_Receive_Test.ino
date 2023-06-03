@@ -44,7 +44,7 @@ void setup() {
   Serial.begin(9600);
 
   // initialize SX1278 with default settings
-  Serial.print(F("[SX1278] Initializing ... "));
+  Serial.println(F("[SX1278] Initializing ... "));
   int state = radio.begin();
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
