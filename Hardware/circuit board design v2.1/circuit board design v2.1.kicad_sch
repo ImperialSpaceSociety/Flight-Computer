@@ -116,7 +116,7 @@
   )
 
   (symbol (lib_id "Components:Logo") (at 30.48 34.29 0) (unit 1)
-    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (in_bom no) (on_board yes) (fields_autoplaced)
     (uuid 707d4321-6a5f-431a-bddf-316d812079af)
     (property "Reference" "L1" (id 0) (at 31.75 33.0199 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -493,6 +493,12 @@
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/da04dc06-cd09-40f6-8d4f-2aa24f41bfcc"
       (reference "#PWR0171") (unit 1) (value "GND") (footprint "")
     )
+    (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/3a1cdd6c-73a3-4125-a26e-7ca2f58e79a4"
+      (reference "#PWR0172") (unit 1) (value "+3.3V") (footprint "")
+    )
+    (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/30721c31-0fc2-439e-a707-8f317c425440"
+      (reference "#PWR0173") (unit 1) (value "+3.3V") (footprint "")
+    )
     (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/290ef2d9-a7a7-40cd-bcbe-6d4903f8532d"
       (reference "C1") (unit 1) (value "100nF") (footprint "Components:C_0603_1608Metric")
     )
@@ -539,7 +545,7 @@
       (reference "C15") (unit 1) (value "100nF") (footprint "Components:C_0603_1608Metric")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/51340589-033f-4817-8e4e-cf924c831231"
-      (reference "C16") (unit 1) (value "4.7uF") (footprint "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder")
+      (reference "C16") (unit 1) (value "4.7uF Tantalum Capacitor") (footprint "Capacitor_SMD:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/0818a10f-22ca-414a-895d-1edac65f3e7c"
       (reference "C17") (unit 1) (value "15pF") (footprint "Components:C_0603_1608Metric")
@@ -569,19 +575,19 @@
       (reference "C27") (unit 1) (value "100nF") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/bba0d31a-418a-4e8f-83f7-a25be8737299"
-      (reference "D1") (unit 1) (value "DFLS130L") (footprint "Components:PowerDI123")
+      (reference "D1") (unit 1) (value "DFLS130L Schottkey Diode") (footprint "Components:PowerDI123")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/cd0b86ff-1c0b-496f-b406-cd1ee8f93729"
-      (reference "D2") (unit 1) (value "DFLS130L") (footprint "Components:PowerDI123")
+      (reference "D2") (unit 1) (value "DFLS130L Schottkey Diode") (footprint "Components:PowerDI123")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/eb35fd78-ff8b-45b0-9b94-d7a23c11653c"
-      (reference "D3") (unit 1) (value "LED_0603") (footprint "Components:C_0603_1608Metric")
+      (reference "D3") (unit 1) (value "SML-LX0603GW-TR Green LED") (footprint "Components:C_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/adcd9279-5c8d-49a6-8222-0f30917edf05"
-      (reference "D4") (unit 1) (value "LED_0603") (footprint "Components:C_0603_1608Metric")
+      (reference "D4") (unit 1) (value "SML-LX0603IW-TR Red LED") (footprint "Components:C_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/68b7c315-3781-4e38-b52f-73c82fbfee7a"
-      (reference "FB1") (unit 1) (value "120R@100MHz") (footprint "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder")
+      (reference "FB1") (unit 1) (value "742792025 Ferrite Bead 120R@100MHz") (footprint "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/68a7b382-39c2-4ae1-8d0a-05353501b153"
       (reference "H1") (unit 1) (value "MountingHole_Pad") (footprint "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom")
@@ -596,19 +602,19 @@
       (reference "H4") (unit 1) (value "MountingHole_Pad") (footprint "MountingHole:MountingHole_3.2mm_M3_ISO7380_Pad_TopBottom")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/7a7f25b3-bfe0-4615-8ccc-4b6dcd99aa74"
-      (reference "J1") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+      (reference "J1") (unit 1) (value "01x02_Male_PinHeader_2.54mm") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/4c1f332c-8bba-42c9-b90b-d64280804d9b"
-      (reference "J2") (unit 1) (value "Conn_01x02") (footprint "Components:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+      (reference "J2") (unit 1) (value "JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal") (footprint "Components:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/26774a6b-c9fc-487d-b24c-55fe316edce7"
-      (reference "J3") (unit 1) (value "105017-0001") (footprint "MOLEX_105017-0001")
+      (reference "J3") (unit 1) (value "105017-0001 Micro USB Conn") (footprint "MOLEX_105017-0001")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/cab2d42c-4304-4773-ba85-608165b3fca2"
-      (reference "J4") (unit 1) (value "U.FL-R-SMT-1_10_") (footprint "Components:U.FL-R-SMT-1_10_")
+      (reference "J4") (unit 1) (value "[OPTIONAL] U.FL-R-SMT-1_10_ Antenna Conn") (footprint "Components:U.FL-R-SMT-1_10_")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/3ec3363d-d0bd-4291-ac89-97e625e49bab"
-      (reference "J6") (unit 1) (value "Conn_01x02_Male") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+      (reference "J6") (unit 1) (value "01x02_Male_PinHeader_2.54mm") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/7260ac4a-bea0-4ca3-b789-ce94c8aaacf5"
       (reference "JP1") (unit 1) (value "SolderJumper_2_Open") (footprint "Jumper:SolderJumper-2_P1.3mm_Open_TrianglePad1.0x1.5mm")
@@ -626,10 +632,10 @@
       (reference "R2") (unit 1) (value "100k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/d11c8c2e-e9f5-485e-999a-64fceff9aa62"
-      (reference "R3") (unit 1) (value "330") (footprint "Components:R_0603_1608Metric")
+      (reference "R3") (unit 1) (value "100") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/a6e9bac5-48c4-4743-ae7b-3db6d10615a6"
-      (reference "R4") (unit 1) (value "330") (footprint "Components:R_0603_1608Metric")
+      (reference "R4") (unit 1) (value "100") (footprint "Components:R_0603_1608Metric")
     )
     (path "/91cf0010-9ee0-4eb5-a57e-e0ac00755c97/df6bec52-9ff5-48f0-90ca-2b54ce92b35c"
       (reference "R5") (unit 1) (value "4.7k") (footprint "Components:R_0603_1608Metric")
@@ -638,49 +644,52 @@
       (reference "R6") (unit 1) (value "3.3k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/e3bd3bf9-86b4-4609-ab40-6a41bd8f9153"
-      (reference "R7") (unit 1) (value "R_0603") (footprint "Components:R_0603_1608Metric")
+      (reference "R7") (unit 1) (value "4.7k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/7a0b4e4e-d248-4f00-98b7-72b1f87c80ae"
-      (reference "R8") (unit 1) (value "R_0603") (footprint "Components:R_0603_1608Metric")
+      (reference "R8") (unit 1) (value "4.7k") (footprint "Components:R_0603_1608Metric")
+    )
+    (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/56273c13-4a41-4955-9ea9-eac8e81eff1f"
+      (reference "R9") (unit 1) (value "4.7k") (footprint "Components:R_0603_1608Metric")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/ede98502-4efb-410a-b6ea-935bd2230c54"
-      (reference "U1") (unit 1) (value "STM32F446RETx") (footprint "Components:LQFP-64_10x10mm_P0.5mm")
+      (reference "U1") (unit 1) (value "STM32F446RET6") (footprint "Components:LQFP-64_10x10mm_P0.5mm")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/63f188be-8ad2-4239-b8d8-d5822711dd1d"
-      (reference "U2") (unit 1) (value "W25Q64JVSS") (footprint "Components:W25Q64JVSSIQ")
+      (reference "U2") (unit 1) (value "W25Q64JVSS 64MBit Flash Chip") (footprint "Components:W25Q64JVSSIQ")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/4d468306-9ceb-4a69-b007-fa8ae388cbdd"
-      (reference "U3") (unit 1) (value "SDR08540M3-01") (footprint "Components:SDR08540M3-01 Buzzer")
+      (reference "U3") (unit 1) (value "SDR08540M3-01 SMD Buzzer") (footprint "Components:SDR08540M3-01 Buzzer")
     )
     (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/ed71ed88-8cab-4422-86f8-4a2a4f8c82ab"
-      (reference "U4") (unit 1) (value "BME280") (footprint "Package_LGA:Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering")
+      (reference "U4") (unit 1) (value "BME280 Environment Sensor") (footprint "Package_LGA:Bosch_LGA-8_2.5x2.5mm_P0.65mm_ClockwisePinNumbering")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/773ac51c-0824-4b2e-94d9-d64abcff076a"
-      (reference "U5") (unit 1) (value "STF202-22T1G") (footprint "Components:STF202-22T1G")
+      (reference "U5") (unit 1) (value "STF202-22T1G ESD/EMI Chip") (footprint "Components:STF202-22T1G")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/9b8aba85-8d4c-44c8-8a42-f8e8521e6eb3"
-      (reference "U6") (unit 1) (value "MAX40203_SOT23") (footprint "Package_TO_SOT_SMD:SOT-23-5")
+      (reference "U6") (unit 1) (value "MAX40203_SOT23 Ideal Diode") (footprint "Package_TO_SOT_SMD:SOT-23-5")
     )
     (path "/5a4d8c5a-da32-47cd-8dfd-858fccee0cc7/3731e045-8a7d-4d8e-aaaf-5960b5e3acb5"
-      (reference "U7") (unit 1) (value "NCP161ASN330T1G") (footprint "Components:SOT95P280X145-5N")
+      (reference "U7") (unit 1) (value "NCP161ASN330T1G LDO") (footprint "Components:SOT95P280X145-5N")
     )
     (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/213656ef-6cc2-43c7-a7af-aa49747656c2"
-      (reference "U8") (unit 1) (value "BMI088") (footprint "Components:BMI088")
+      (reference "U8") (unit 1) (value "BMI088 Inertial Measurement Unit") (footprint "Components:BMI088")
     )
     (path "/0e7a8511-bb07-4cdf-8fc9-61e0cb55f4d9/c8d93d07-b504-4000-86e1-fab3d26059bb"
-      (reference "U9") (unit 1) (value "LIS3MDLTR") (footprint "Components:XDCR_LIS3MDLTR")
+      (reference "U9") (unit 1) (value "LIS3MDLTR Magnetometer") (footprint "Components:XDCR_LIS3MDLTR")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/25c45cd2-066c-45b3-b722-e55b5a9c0038"
-      (reference "U10") (unit 1) (value "LAMBDA-9D") (footprint "Components:XCVR_LAMBDA-9D")
+      (reference "U10") (unit 1) (value "LAMBDA-9D Radio") (footprint "Components:XCVR_LAMBDA-9D")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/b74cf466-eeed-475a-a81d-a41ea06e694a"
-      (reference "U11") (unit 1) (value "2SCR512R_HZG") (footprint "Components:2SCR512RHZG")
+      (reference "U11") (unit 1) (value "2SCR512R_HZG BJT") (footprint "Components:2SCR512RHZG")
     )
     (path "/91cf0010-9ee0-4eb5-a57e-e0ac00755c97/f9c1d9c6-4471-41af-aea8-e925cdb849cf"
-      (reference "U12") (unit 1) (value "L80-R") (footprint "Components:Quectel_L80-R")
+      (reference "U12") (unit 1) (value "L80-R GPS") (footprint "Components:Quectel_L80-R")
     )
     (path "/b2e7fea0-7ba9-48b0-990f-5c369d704fdf/1523611f-36b3-41d8-aacc-df91fb39802f"
-      (reference "Y1") (unit 1) (value "ECS-80-8-33Q-ADS-TR3") (footprint "Components:ECS-80-8-33Q-ADS-TR3 Crystal")
+      (reference "Y1") (unit 1) (value "ECS-80-8-33Q-ADS-TR3 8MHz Crystal") (footprint "Components:ECS-80-8-33Q-ADS-TR3 Crystal")
     )
   )
 )

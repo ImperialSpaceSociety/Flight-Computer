@@ -544,7 +544,7 @@
     (property "Reference" "U12" (id 0) (at 101.0794 91.44 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "L80-R" (id 1) (at 101.0794 93.98 0)
+    (property "Value" "L80-R GPS" (id 1) (at 101.0794 93.98 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Components:Quectel_L80-R" (id 2) (at 99.06 101.6 0)
