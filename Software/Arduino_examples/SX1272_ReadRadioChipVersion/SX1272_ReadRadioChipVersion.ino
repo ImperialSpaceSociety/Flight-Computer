@@ -19,6 +19,29 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("Reading chip ID");
+
+  SPI.beginTransaction(settings);
+  digitalWrite(CS_PIN, LOW);
+  
+  uint8_t receivedVal = SPI.transfer(66);
+  Serial.print("Received value 1: ");
+  Serial.print(receivedVal);
+  receivedVal = SPI.transfer(0);
+  Serial.print(" Received value 2: ");
+  Serial.println(receivedVal);
+
+  digitalWrite(CS_PIN, HIGH);
+  SPI.endTransaction();
+
+  if (receivedVal == SX1272_CHIP_ID) {
+    Serial.println("SX1272 chip detected!");
+  }
+  
+  delay(100);
+
+  Serial.println("Reading chip mode");
+
   SPI.beginTransaction(settings);
   digitalWrite(CS_PIN, LOW);
   
