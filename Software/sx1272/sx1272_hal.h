@@ -2,7 +2,7 @@
 /*
     Lightweight hardware abstraction layer for
     platform dependent functions
-*/
+ */
 
 
 #ifndef _sx_hal_h
@@ -17,13 +17,13 @@
 
 typedef struct sx_gpio {
 
-	// Platform-dependent GPIO struct
-	// i.e. information needed to write to a GPIO
+  // Platform-dependent GPIO struct
+  // i.e. information needed to write to a GPIO
 
-	// On STM32 using HAL, this contains a port and a pin.
+  // On STM32 using HAL, this contains a port and a pin.
 
-	GPIO_TypeDef *port;
-	uint16_t pin;
+  GPIO_TypeDef *port;
+  uint16_t pin;
 
 } sx_gpio_t;
 

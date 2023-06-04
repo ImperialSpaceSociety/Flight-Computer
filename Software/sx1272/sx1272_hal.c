@@ -9,19 +9,19 @@
 #include <stdarg.h>
 
 void sx_gpio_write(sx_gpio_t *gpio, bool value) {
-	HAL_GPIO_WritePin(gpio->port, gpio->pin, value);
+  HAL_GPIO_WritePin(gpio->port, gpio->pin, value);
 }
 
 int sx_spi_write(uint8_t *buf, uint16_t size, void *spi) {
-	return HAL_SPI_Transmit((SPI_HandleTypeDef *) spi, buf, size, 1000);
+  return HAL_SPI_Transmit((SPI_HandleTypeDef *) spi, buf, size, 1000);
 }
 
 int sx_spi_read(uint8_t *buf, uint16_t size, void *spi) {
-	return HAL_SPI_Receive((SPI_HandleTypeDef *) spi, buf, size, 1000);
+  return HAL_SPI_Receive((SPI_HandleTypeDef *) spi, buf, size, 1000);
 }
 
 void sx_sleep(uint32_t ms) {
-	HAL_Delay(ms);
+  HAL_Delay(ms);
 }
 
 void sx_dlog(const char *format, ...) {
