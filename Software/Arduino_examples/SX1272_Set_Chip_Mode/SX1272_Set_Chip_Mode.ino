@@ -2,6 +2,8 @@
 
 // Register values
 #define REG_CHIP_MODE 0x01
+#define REG_FREQ_HOP 0x22
+#define REG_SYNC_WORD 0x39
 #define REG_CHIP_ID 0x42
 
 SPISettings settings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
@@ -13,7 +15,7 @@ int SX1272_CHIP_ID = 0x22;
 
 uint8_t WRITE_COMMAND = 0x80;
 uint8_t MODE_REGISTER = 0x01;
-bool isZero = false;
+uint8_t DEFAULT_LORA_SYNC_WORD = 0x12;
 
 void setup() {
   Serial.begin(9600);
@@ -27,97 +29,106 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Reading chip ID");
-
-  SPI.beginTransaction(settings);
-  digitalWrite(CS_PIN, LOW);
-  
-  uint8_t receivedVal = SPI.transfer(66);
-  Serial.print("Received value 1: ");
-  Serial.print(receivedVal);
-  receivedVal = SPI.transfer(0);
-  Serial.print(" Received value 2: ");
+  Serial.println("--------------- START ---------------");
+  uint8_t receivedVal = SPIRegRead(REG_CHIP_ID);
+  Serial.print("Reading chip ID: ");
   Serial.println(receivedVal);
-
-  digitalWrite(CS_PIN, HIGH);
-  SPI.endTransaction();
-  
   delay(100);
 
-  Serial.println("Reading chip mode");
   receivedVal = SPIRegRead(REG_CHIP_MODE);
+  Serial.print("Reading chip mode: ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  receivedVal = SPIRegRead(REG_FREQ_HOP);
+  Serial.print("Reading frequency hop: ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  uint8_t valueToWrite = receivedVal == 0 ? 5 : 0;
+
+  receivedVal = SPIRegWrite(REG_FREQ_HOP, valueToWrite);
+  Serial.print("Writing frequency hop: ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  Serial.println("Setting FSK");
+  setFSKMode();
+  receivedVal = SPIRegRead(REG_CHIP_MODE);
+  Serial.print("Reading chip mode: ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  Serial.println("Setting LORA");
+  setLORAMode();
+  receivedVal = SPIRegRead(REG_CHIP_MODE);
+  Serial.print("Reading chip mode: ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  Serial.println("Setting STANDBY mode");
+  setSTANDBYMode();
+  delay(10);
+  receivedVal = SPIRegRead(REG_CHIP_MODE);
+  Serial.print("Reading chip mode (should be 129): ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  Serial.println("Setting LORA sync word");
+  setRadioSyncWord(DEFAULT_LORA_SYNC_WORD);
+  delay(10);
+  receivedVal = SPIRegRead(REG_SYNC_WORD);
+  Serial.print("Reading LORA sync word (should be 18): ");
+  Serial.println(receivedVal);
+  delay(100);
+  Serial.println("--------------- END ---------------");
+}
+
+void setLORAMode() {
+  uint8_t currentMode = SPIRegRead(REG_CHIP_MODE);
+  uint8_t currentModeSleep = currentMode & 0xF8;
+  uint8_t receivedVal = SPIRegWrite(REG_CHIP_MODE, currentModeSleep);
+  receivedVal = SPIRegWrite(REG_CHIP_MODE, 0x80);
+}
+
+void setFSKMode() {
+  uint8_t currentMode = SPIRegRead(REG_CHIP_MODE);
+  uint8_t currentModeSleep = currentMode & 0xF8;
+  uint8_t receivedVal = SPIRegWrite(REG_CHIP_MODE, currentModeSleep);
+  receivedVal = SPIRegWrite(REG_CHIP_MODE, 0x0);
+}
+
+void setSTANDBYMode() {
+  uint8_t currentMode = SPIRegRead(REG_CHIP_MODE);
+  uint8_t currentModeStandby = currentMode & 0xF8 | 0x01;
+  uint8_t receivedVal = SPIRegWrite(REG_CHIP_MODE, currentModeStandby);
+}
+
+void setRadioSyncWord(uint8_t syncWord) {
+  uint8_t receivedVal = SPIRegWrite(REG_SYNC_WORD, syncWord);
+}
+
+uint8_t SPIRegRead(uint8_t reg) {
   SPI.beginTransaction(settings);
   digitalWrite(CS_PIN, LOW);
-  
-  receivedVal = SPI.transfer(1);
-  Serial.print("Received value 1: ");
-  Serial.print(receivedVal);
+
+  uint8_t receivedVal = SPI.transfer(reg);
   receivedVal = SPI.transfer(0);
-  Serial.print(" Received value 2: ");
-  Serial.println(receivedVal);
 
   digitalWrite(CS_PIN, HIGH);
   SPI.endTransaction();
-  
-  delay(100);
+  return receivedVal;
+}
 
-  Serial.println("Setting the chip mode");
-
-  SPI.beginTransaction(settings);
-  digitalWrite(CS_PIN, LOW);
-  
-  receivedVal = SPI.transfer(129);
-  Serial.print("Received value 1: ");
-  Serial.print(receivedVal);
-  receivedVal = SPI.transfer(1);
-  Serial.print(" Received value 2: ");
-  Serial.println(receivedVal);
-
-  digitalWrite(CS_PIN, HIGH);
-  SPI.endTransaction();
-
-  delay(100);
-
-  Serial.println("Reading config");
-
-  uint8_t configRegister = 36;
-
-  SPI.beginTransaction(settings);
-  digitalWrite(CS_PIN, LOW);
-  
-  receivedVal = SPI.transfer(configRegister);
-  Serial.print("Received value 1: ");
-  Serial.print(receivedVal);
-  receivedVal = SPI.transfer(0);
-  Serial.print(" Received value 2: ");
-  Serial.println(receivedVal);
-
-  digitalWrite(CS_PIN, HIGH);
-  SPI.endTransaction();
-
-  delay(100);
-
-  Serial.println("Setting config");
-
+uint8_t SPIRegWrite(uint8_t reg, uint8_t val) {
   SPI.beginTransaction(settings);
   digitalWrite(CS_PIN, LOW);
 
-  uint8_t commandToBeSent = WRITE_COMMAND | configRegister;
-  uint8_t valueToWrite = isZero ? 0 : 5;
-  isZero = !isZero;
-
-  Serial.print("Command to be sent ");
-  Serial.println(commandToBeSent);
-  
-  receivedVal = SPI.transfer(commandToBeSent);
-  Serial.print("Received value 1: ");
-  Serial.print(receivedVal);
-  receivedVal = SPI.transfer(valueToWrite);
-  Serial.print(" Received value 2: ");
-  Serial.println(receivedVal);
+  uint8_t writeCommand = WRITE_COMMAND | reg;
+  uint8_t receivedVal = SPI.transfer(writeCommand);
+  receivedVal = SPI.transfer(val);
 
   digitalWrite(CS_PIN, HIGH);
   SPI.endTransaction();
-
-  delay(100);
+  return receivedVal;
 }
