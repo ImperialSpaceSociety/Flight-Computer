@@ -2,6 +2,9 @@
 
 // Register values
 #define REG_CHIP_MODE 0x01
+#define REG_OCP 0x0B
+#define REG_PREAMBLE_MSB 0x20
+#define REG_PREAMBLE_LSB 0x21
 #define REG_FREQ_HOP 0x22
 #define REG_SYNC_WORD 0x39
 #define REG_CHIP_ID 0x42
@@ -16,6 +19,7 @@ int SX1272_CHIP_ID = 0x22;
 uint8_t WRITE_COMMAND = 0x80;
 uint8_t MODE_REGISTER = 0x01;
 uint8_t DEFAULT_LORA_SYNC_WORD = 0x12;
+uint16_t DEFAULT_PREAMBLE_LENGTH = 0x0008;
 
 void setup() {
   Serial.begin(9600);
@@ -81,6 +85,26 @@ void loop() {
   Serial.print("Reading LORA sync word (should be 18): ");
   Serial.println(receivedVal);
   delay(100);
+
+  Serial.println("Setting the current limit");
+  setCurrentLimit(60);
+  delay(10);
+  receivedVal = SPIRegRead(REG_OCP);
+  Serial.print("Reading over current protection (should be 35): ");
+  Serial.println(receivedVal);
+  delay(100);
+
+  Serial.println("Setting the Preamble length");
+  setPreambleLength(DEFAULT_PREAMBLE_LENGTH);
+  delay(10);
+  receivedVal = SPIRegRead(REG_PREAMBLE_MSB);
+  Serial.print("Reading preamble length (MSB): ");
+  Serial.print(receivedVal);
+  receivedVal = SPIRegRead(REG_PREAMBLE_LSB);
+  Serial.print(" preamble length (LSB): ");
+  Serial.println(receivedVal);
+  delay(100);
+  
   Serial.println("--------------- END ---------------");
 }
 
@@ -108,6 +132,26 @@ void setRadioSyncWord(uint8_t syncWord) {
   uint8_t receivedVal = SPIRegWrite(REG_SYNC_WORD, syncWord);
 }
 
+void setCurrentLimit(uint8_t currentLimit) {
+  setSTANDBYMode();
+
+  if(!(((currentLimit >= 45) && (currentLimit <= 240)) || (currentLimit == 0))) {
+    Serial.println("The current limit is not within the allowed threshold!");
+  } else {
+    if(currentLimit <= 120) {
+      uint8_t raw = (currentLimit - 45) / 5;
+      SPIRegWrite(REG_OCP, 0x20 | raw);
+    } else if(currentLimit <= 240) {
+      uint8_t raw = (currentLimit + 30) / 10;
+      SPIRegWrite(REG_OCP, 0x20 | raw);
+    }
+  }
+}
+
+void setPreambleLength(uint16_t preambleLength) {
+
+}
+
 uint8_t SPIRegRead(uint8_t reg) {
   SPI.beginTransaction(settings);
   digitalWrite(CS_PIN, LOW);
@@ -121,6 +165,7 @@ uint8_t SPIRegRead(uint8_t reg) {
 }
 
 uint8_t SPIRegWrite(uint8_t reg, uint8_t val) {
+  // TODO: maybe add write 
   SPI.beginTransaction(settings);
   digitalWrite(CS_PIN, LOW);
 
