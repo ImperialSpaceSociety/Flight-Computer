@@ -22,6 +22,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
+#include "stdlib.h"
+#include "usbd_cdc_if.h"
 
 /* USER CODE END Includes */
 
@@ -100,28 +103,35 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_QUADSPI_Init();
-  MX_USB_DEVICE_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_UART5_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  char test_message[50];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	// Buzzer ON
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
-	HAL_Delay(0.5);
-	// Buzzer OFF
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-	HAL_Delay(0.5);
+
+
+//	// Buzzer ON
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+//	HAL_Delay(1);
+//	// Buzzer OFF
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+//	HAL_Delay(1);
+
+	// USB transmission
+	sprintf(test_message, "Hello World: %f", 1.12);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
   }
   /* USER CODE END 3 */
 }
@@ -389,14 +399,16 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : Acc_Int1_Pin Gyro_Int3_Pin Mag_Data_Ready_Pin */
-  GPIO_InitStruct.Pin = Acc_Int1_Pin|Gyro_Int3_Pin|Mag_Data_Ready_Pin;
+  /*Configure GPIO pins : Acc_Int1_Pin Gyro_Int3_Pin Radio_DIO2_Pin Radio_DIO5_Pin
+                           Radio_DIO4_Pin Radio_DIO3_Pin */
+  GPIO_InitStruct.Pin = Acc_Int1_Pin|Gyro_Int3_Pin|Radio_DIO2_Pin|Radio_DIO5_Pin
+                          |Radio_DIO4_Pin|Radio_DIO3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Radio_DIO1_Pin Radio_DIO0_Pin Radio_TX_Pin */
-  GPIO_InitStruct.Pin = Radio_DIO1_Pin|Radio_DIO0_Pin|Radio_TX_Pin;
+  /*Configure GPIO pins : Radio_DIO1_Pin Radio_DIO0_Pin Radio_TX_Pin Mag_Data_Ready_Pin */
+  GPIO_InitStruct.Pin = Radio_DIO1_Pin|Radio_DIO0_Pin|Radio_TX_Pin|Mag_Data_Ready_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
