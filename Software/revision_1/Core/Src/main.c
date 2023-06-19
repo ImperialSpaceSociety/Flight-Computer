@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -53,6 +54,27 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
 
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for buzzerTask */
+osThreadId_t buzzerTaskHandle;
+const osThreadAttr_t buzzerTask_attributes = {
+  .name = "buzzerTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for loggingTask */
+osThreadId_t loggingTaskHandle;
+const osThreadAttr_t loggingTask_attributes = {
+  .name = "loggingTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -65,6 +87,10 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
+void StartDefaultTask(void *argument);
+void StartBuzzer(void *argument);
+void StartLogging(void *argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -107,31 +133,48 @@ int main(void)
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_UART5_Init();
-  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
+  /* Init scheduler */
+  osKernelInitialize();
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/**
+* @}
+*/
+/**
+* @}
+*/
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  char test_message[50];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-
-//	// Buzzer ON
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
-//	HAL_Delay(1);
-//	// Buzzer OFF
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-//	HAL_Delay(1);
-
-	// USB transmission
-	sprintf(test_message, "Hello World: %f", 1.12);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
   }
   /* USER CODE END 3 */
 }
@@ -439,6 +482,89 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* init code for USB_DEVICE */
+  MX_USB_DEVICE_Init();
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {}
+  /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_StartBuzzer */
+/**
+* @brief Function implementing the buzzer thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartBuzzer */
+void StartBuzzer(void *argument)
+{
+  /* USER CODE BEGIN StartBuzzer */
+  /* Infinite loop */
+  for(;;)
+  {
+	// Buzzer ON
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+	osDelay(1);
+	// Buzzer OFF
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+	osDelay(1);
+  }
+  /* USER CODE END StartBuzzer */
+}
+
+/* USER CODE BEGIN Header_StartLogging */
+/**
+  * @brief  Function implementing the loggingTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartLogging */
+void StartLogging(void *argument)
+{
+  /* USER CODE BEGIN StartLogging */
+	char test_message[50];
+  /* Infinite loop */
+  for(;;)
+  {
+	sprintf(test_message, "Hello World: %f", 1.12);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	osDelay(1000);
+  }
+  /* USER CODE END StartLogging */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM6 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
