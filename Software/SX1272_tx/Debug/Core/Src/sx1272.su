@@ -1,0 +1,10 @@
+../Core/Src/sx1272.c:10:13:write_reg	24	static
+../Core/Src/sx1272.c:19:16:read_reg	16	static
+../Core/Src/sx1272.c:28:5:sx1272_common_init	280	static
+../Core/Src/sx1272.c:84:13:sx1272_transmit	24	static
+../Core/Src/sx1272.c:120:13:sx1272_receive_single	32	static
+../Core/Src/sx1272.c:179:13:sx1272_receive_continuous	40	static
+../Core/Src/sx1272.c:250:5:sx1272_current_rssi	16	static
+../Core/Src/sx1272.c:254:5:sx1272_packet_rssi	24	static
+../Core/Src/sx1272.c:262:5:sx1272_packet_snr	24	static
+../Core/Src/sx1272.c:267:6:sx1272_interrupt_handler	16	static

@@ -1,0 +1,5 @@
+../Core/Src/sx1227_hal.c:10:6:sx_gpio_write	16	static
+../Core/Src/sx1227_hal.c:14:5:sx_spi_write	24	static
+../Core/Src/sx1227_hal.c:18:5:sx_spi_read	24	static
+../Core/Src/sx1227_hal.c:22:6:sx_sleep	16	static
+../Core/Src/sx1227_hal.c:26:6:sx_dlog	144	static
