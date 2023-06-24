@@ -1,0 +1,8 @@
+../Core/Src/common.c:42:21:bmi08_i2c_read	56	static
+../Core/Src/common.c:57:21:bmi08_i2c_write	56	static
+../Core/Src/common.c:68:21:bmi08_spi_read	32	static
+../Core/Src/common.c:88:21:bmi08_spi_write	32	static
+../Core/Src/common.c:99:6:bmi08_delay_us	16	static
+../Core/Src/common.c:110:8:bmi08_interface_init	24	static
+../Core/Src/common.c:248:6:bmi08_error_codes_print_result	16	static
+../Core/Src/common.c:305:6:bmi08_coines_deinit	4	static

@@ -1,0 +1,8 @@
+bmi08xa.c:481:8:bmi08xa_init	6
+bmi08xa.c:509:8:bmi08xa_set_meas_conf	9
+bmi08xa.c:584:8:bmi08xa_perform_selftest	6
+bmi08xa.c:641:15:null_ptr_check	5
+bmi08xa.c:662:15:enable_self_test	5
+bmi08xa.c:702:15:positive_excited_accel	2
+bmi08xa.c:722:15:negative_excited_accel	3
+bmi08xa.c:749:15:validate_accel_self_test	10

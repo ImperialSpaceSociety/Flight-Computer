@@ -1,0 +1,8 @@
+common.c:42:21:bmi08_i2c_read	1
+common.c:57:21:bmi08_i2c_write	1
+common.c:68:21:bmi08_spi_read	1
+common.c:88:21:bmi08_spi_write	1
+common.c:99:6:bmi08_delay_us	2
+common.c:110:8:bmi08_interface_init	2
+common.c:248:6:bmi08_error_codes_print_result	12
+common.c:305:6:bmi08_coines_deinit	1
