@@ -502,12 +502,15 @@ void StartBuzzer(void const * argument)
   /* Infinite loop */
   for(;;)
   {
-	// Buzzer ON
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
-	osDelay(1);
-	// Buzzer OFF
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-	osDelay(1);
+    /*
+    // Buzzer ON
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+    osDelay(1);
+    // Buzzer OFF
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+    osDelay(1);
+    */
+    osDelay(1000);
   }
   /* USER CODE END StartBuzzer */
 }
@@ -523,12 +526,13 @@ void StartLogging(void const * argument)
 {
   /* USER CODE BEGIN StartLogging */
 	char test_message[50];
+	int cnt = 0;
   /* Infinite loop */
   for(;;)
   {
-	sprintf(test_message, "Hello World: %f", 1.12);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	osDelay(1000);
+    sprintf(test_message, "Hello World: %d\r\n", cnt);
+    CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+    osDelay(1000);
   }
   /* USER CODE END StartLogging */
 }
