@@ -54,27 +54,9 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-/* Definitions for buzzerTask */
-osThreadId_t buzzerTaskHandle;
-const osThreadAttr_t buzzerTask_attributes = {
-  .name = "buzzerTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
-};
-/* Definitions for loggingTask */
-osThreadId_t loggingTaskHandle;
-const osThreadAttr_t loggingTask_attributes = {
-  .name = "loggingTask",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
+osThreadId defaultTaskHandle;
+osThreadId buzzerTaskHandle;
+osThreadId loggingTaskHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -87,9 +69,9 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
-void StartDefaultTask(void *argument);
-void StartBuzzer(void *argument);
-void StartLogging(void *argument);
+void StartDefaultTask(void const * argument);
+void StartBuzzer(void const * argument);
+void StartLogging(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -137,32 +119,38 @@ int main(void)
 
   /* USER CODE END 2 */
 
-  /* Init scheduler */
-  osKernelInitialize();
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
-/**
-* @}
-*/
-/**
-* @}
-*/
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* definition and creation of buzzerTask */
+  osThreadDef(buzzerTask, StartBuzzer, osPriorityNormal, 0, 128);
+  buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
+
+  /* definition and creation of loggingTask */
+  osThreadDef(loggingTask, StartLogging, osPriorityLow, 0, 128);
+  loggingTaskHandle = osThreadCreate(osThread(loggingTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
 
   /* Start scheduler */
   osKernelStart();
@@ -490,7 +478,7 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+void StartDefaultTask(void const * argument)
 {
   /* init code for USB_DEVICE */
   MX_USB_DEVICE_Init();
@@ -508,7 +496,7 @@ void StartDefaultTask(void *argument)
 * @retval None
 */
 /* USER CODE END Header_StartBuzzer */
-void StartBuzzer(void *argument)
+void StartBuzzer(void const * argument)
 {
   /* USER CODE BEGIN StartBuzzer */
   /* Infinite loop */
@@ -531,7 +519,7 @@ void StartBuzzer(void *argument)
   * @retval None
   */
 /* USER CODE END Header_StartLogging */
-void StartLogging(void *argument)
+void StartLogging(void const * argument)
 {
   /* USER CODE BEGIN StartLogging */
 	char test_message[50];
