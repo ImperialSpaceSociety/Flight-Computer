@@ -1,0 +1,10 @@
+../Core/Src/L80M39.c:5:5:L80M39_init	16	static
+../Core/Src/L80M39.c:14:5:L80M39_parse	40	static
+../Core/Src/L80M39.c:36:5:L80M39_parseGPRMC	24	static
+../Core/Src/L80M39.c:40:5:L80M39_parseGPVTG	24	static
+../Core/Src/L80M39.c:44:5:L80M39_parseGPGGA	72	dynamic
+../Core/Src/L80M39.c:76:5:L80M39_parseGPGSA	24	static
+../Core/Src/L80M39.c:80:5:L80M39_parseGPGSV	24	static
+../Core/Src/L80M39.c:84:5:L80M39_parseGPGLL	24	static
+../Core/Src/L80M39.c:88:5:L80M39_parseGPTXT	40	static
+../Core/Src/L80M39.c:111:18:L80M39_parseMessageType	24	static
