@@ -43,11 +43,11 @@ BMI08_INTF_RET_TYPE bmi08_i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t
 {
 	uint8_t dev_addr = *(uint8_t*)intf_ptr;
 
-	HAL_I2C_Mem_Read(&hi2c1, dev_addr, reg_addr, len, reg_data, len, HAL_MAX_DELAY);
+	return HAL_I2C_Mem_Read(&hi2c1, dev_addr, reg_addr, len, reg_data, len, HAL_MAX_DELAY);
 
     //HAL_I2C_Master_Transmit(&hi2c1, dev_addr, &reg_addr, len, HAL_MAX_DELAY); //Tell BMI088 to read sensor data and store in register
     //HAL_I2C_Master_Receive(&hi2c1, dev_addr, &received_data, len, HAL_MAX_DELAY); //Read from BMI088 registers
-    return 0;
+   // return 0;
     //return coines_read_i2c(COINES_I2C_BUS_0, dev_addr, reg_addr, reg_data, (uint16_t)len);
 }
 
@@ -57,8 +57,8 @@ BMI08_INTF_RET_TYPE bmi08_i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t
 BMI08_INTF_RET_TYPE bmi08_i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *intf_ptr)
 {
     uint8_t dev_addr = *(uint8_t*)intf_ptr;
-    HAL_I2C_Mem_Write(&hi2c1, dev_addr, reg_addr, len, reg_data, len, HAL_MAX_DELAY);
-    return 0;
+    return HAL_I2C_Mem_Write(&hi2c1, dev_addr, reg_addr, len, reg_data, len, HAL_MAX_DELAY);
+   // return 0;
     //return coines_write_i2c(COINES_I2C_BUS_0, dev_addr, reg_addr, (uint8_t *)reg_data, (uint16_t)len);
 }
 

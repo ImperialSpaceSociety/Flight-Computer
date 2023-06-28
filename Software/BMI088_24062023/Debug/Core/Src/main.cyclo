@@ -5,10 +5,10 @@ main.c:227:15:disable_bmi08_interrupt	2
 main.c:263:14:lsb_to_mps2	1
 main.c:276:14:lsb_to_dps	1
 main.c:292:5:main	11
-main.c:459:6:SystemClock_Config	3
-main.c:507:13:MX_I2C1_Init	2
-main.c:541:13:MX_TIM1_Init	4
-main.c:587:13:MX_USART2_UART_Init	2
-main.c:620:13:MX_GPIO_Init	1
-main.c:653:5:_write	2
-main.c:667:6:Error_Handler	1
+main.c:467:6:SystemClock_Config	3
+main.c:515:13:MX_I2C1_Init	2
+main.c:549:13:MX_TIM1_Init	4
+main.c:595:13:MX_USART2_UART_Init	2
+main.c:628:13:MX_GPIO_Init	1
+main.c:661:5:_write	2
+main.c:675:6:Error_Handler	1

@@ -317,6 +317,14 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+
+  uint8_t rval = 1;
+  uint8_t rstatus = 0;
+  rstatus = HAL_I2C_Mem_Read(&hi2c1, 0x68, 0x0, 1, &rval, 1, HAL_MAX_DELAY);
+
+  rstatus = HAL_I2C_Mem_Read(&hi2c1, 0x18, 0x0, 1, &rval, 1, HAL_MAX_DELAY);
+
+
   int8_t rslt;
 
     uint8_t times_to_read = 0;
