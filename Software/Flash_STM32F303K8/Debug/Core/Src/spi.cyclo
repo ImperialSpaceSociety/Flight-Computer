@@ -1,0 +1,11 @@
+spi.c:50:16:a_spi_cs_init	1
+spi.c:77:9:spi_init	5
+spi.c:128:9:spi_deinit	2
+spi.c:151:9:spi_write_cmd	3
+spi.c:188:9:spi_write	4
+spi.c:237:9:spi_write_address16	4
+spi.c:286:9:spi_read_cmd	3
+spi.c:323:9:spi_read	4
+spi.c:372:9:spi_read_address16	4
+spi.c:422:9:spi_transmit	3
+spi.c:460:9:spi_write_read	5

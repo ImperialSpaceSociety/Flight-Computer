@@ -1,0 +1,17 @@
+../Core/Src/uart.c:68:9:uart_init	16	static
+../Core/Src/uart.c:101:9:uart_deinit	8	static
+../Core/Src/uart.c:121:9:uart_write	24	static
+../Core/Src/uart.c:159:10:uart_read	24	static
+../Core/Src/uart.c:189:10:uart_flush	4	static
+../Core/Src/uart.c:203:10:uart_print	272	static
+../Core/Src/uart.c:235:9:uart2_init	16	static
+../Core/Src/uart.c:268:9:uart2_deinit	8	static
+../Core/Src/uart.c:288:9:uart2_write	24	static
+../Core/Src/uart.c:326:10:uart2_read	24	static
+../Core/Src/uart.c:356:10:uart2_flush	4	static
+../Core/Src/uart.c:369:21:uart_get_handle	4	static
+../Core/Src/uart.c:379:21:uart2_get_handle	4	static
+../Core/Src/uart.c:388:6:uart_set_tx_done	4	static
+../Core/Src/uart.c:397:6:uart2_set_tx_done	4	static
+../Core/Src/uart.c:406:6:uart_irq_handler	8	static
+../Core/Src/uart.c:424:6:uart2_irq_handler	8	static

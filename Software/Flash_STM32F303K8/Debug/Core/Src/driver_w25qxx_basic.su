@@ -1,0 +1,8 @@
+../Core/Src/driver_w25qxx_basic.c:51:9:w25qxx_basic_init	24	static
+../Core/Src/driver_w25qxx_basic.c:125:9:w25qxx_basic_deinit	8	static
+../Core/Src/driver_w25qxx_basic.c:144:9:w25qxx_basic_power_down	8	static
+../Core/Src/driver_w25qxx_basic.c:163:9:w25qxx_basic_wake_up	8	static
+../Core/Src/driver_w25qxx_basic.c:182:9:w25qxx_basic_chip_erase	8	static
+../Core/Src/driver_w25qxx_basic.c:203:9:w25qxx_basic_get_id	16	static
+../Core/Src/driver_w25qxx_basic.c:225:9:w25qxx_basic_write	24	static
+../Core/Src/driver_w25qxx_basic.c:247:9:w25qxx_basic_read	24	static
