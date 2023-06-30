@@ -53,6 +53,7 @@ UART_HandleTypeDef huart5;
 
 osThreadId consoleTaskHandle;
 osThreadId radioTaskHandle;
+osThreadId buzzerTaskHandle;
 osMessageQId printQueueHandle;
 /* USER CODE BEGIN PV */
 
@@ -68,6 +69,7 @@ static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
 void ConsoleTask(void const * argument);
 extern void RadioTask(void const * argument);
+extern void BuzzerTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -144,6 +146,10 @@ int main(void)
   /* definition and creation of radioTask */
   osThreadDef(radioTask, RadioTask, osPriorityNormal, 0, 256);
   radioTaskHandle = osThreadCreate(osThread(radioTask), NULL);
+
+  /* definition and creation of buzzerTask */
+  osThreadDef(buzzerTask, BuzzerTask, osPriorityLow, 0, 128);
+  buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */

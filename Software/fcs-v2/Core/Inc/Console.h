@@ -24,18 +24,3 @@ osStatus dlog(const char *format, ...);
 #define DLOG_SOH "\001"
 extern osMessageQId printQueueHandle;
 
-/*
-#define LogCrit(timeout_ms, format, ...) \
-  dlog((timeout_ms), (DLOG_CRIT format), __VA_ARGS__)
-
-#define LogErr(timeout_ms, format, ...) \
-  dlog((timeout_ms), (DLOG_ERR format), __VA_ARGS__)
-
-#define LogWarn(timeout_ms, format, ...) \
-  dlog((timeout_ms), (DLOG_WARN format), __VA_ARGS__)
-
-#define LogInfo(...) dlog(__VA_ARGS__)
-
-#define LogDebug(timeout_ms, format, ...) \
-  dlog((timeout_ms), (DLOG_DEBUG format), __VA_ARGS__)
-*/
