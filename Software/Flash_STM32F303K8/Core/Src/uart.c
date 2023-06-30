@@ -51,7 +51,8 @@ volatile uint8_t g_uart_tx_done;               /**< uart tx done flag */
 /**
  * @brief uart2 var definition
  */
-UART_HandleTypeDef g_uart2_handle;               /**< uart2 handle */
+extern UART_HandleTypeDef huart2;
+// UART_HandleTypeDef g_uart2_handle;               /**< uart2 handle */
 uint8_t g_uart2_rx_buffer[UART2_MAX_LEN];        /**< uart2 rx buffer */
 uint8_t g_uart2_buffer;                          /**< uart2 one buffer */
 volatile uint16_t g_uart2_point;                 /**< uart2 rx point */
@@ -234,23 +235,23 @@ uint16_t uart_print(const char *const fmt, ...)
  */
 uint8_t uart2_init(uint32_t baud)
 {
-    g_uart2_handle.Instance = USART2;
-    g_uart2_handle.Init.BaudRate = baud;
-    g_uart2_handle.Init.WordLength = UART_WORDLENGTH_8B;
-    g_uart2_handle.Init.StopBits = UART_STOPBITS_1;
-    g_uart2_handle.Init.Parity = UART_PARITY_NONE;
-    g_uart2_handle.Init.Mode = UART_MODE_TX_RX;
-    g_uart2_handle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    g_uart2_handle.Init.OverSampling = UART_OVERSAMPLING_16;
+    huart2.Instance = USART2;
+    huart2.Init.BaudRate = baud;
+    huart2.Init.WordLength = UART_WORDLENGTH_8B;
+    huart2.Init.StopBits = UART_STOPBITS_1;
+    huart2.Init.Parity = UART_PARITY_NONE;
+    huart2.Init.Mode = UART_MODE_TX_RX;
+    huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    huart2.Init.OverSampling = UART_OVERSAMPLING_16;
     
     /* uart init */
-    if (HAL_UART_Init(&g_uart2_handle) != HAL_OK)
+    if (HAL_UART_Init(&huart2) != HAL_OK)
     {
         return 1;
     }
     
     /* receive one byte */
-    if (HAL_UART_Receive_IT(&g_uart2_handle, (uint8_t *)&g_uart2_buffer, 1) != HAL_OK)
+    if (HAL_UART_Receive_IT(&huart2, (uint8_t *)&g_uart2_buffer, 1) != HAL_OK)
     {
         return 1;
     }
@@ -268,7 +269,7 @@ uint8_t uart2_init(uint32_t baud)
 uint8_t uart2_deinit(void)
 {
     /* uart deinit */
-    if (HAL_UART_DeInit(&g_uart2_handle) != HAL_OK)
+    if (HAL_UART_DeInit(&huart2) != HAL_OK)
     {
         return 1;
     }
@@ -293,7 +294,7 @@ uint8_t uart2_write(uint8_t *buf, uint16_t len)
     g_uart2_tx_done = 0;
     
     /* transmit */
-    if (HAL_UART_Transmit_IT(&g_uart2_handle, (uint8_t *)buf, len) != HAL_OK)
+    if (HAL_UART_Transmit_IT(&huart2, (uint8_t *)buf, len) != HAL_OK)
     {
         return 1;
     }
@@ -378,7 +379,7 @@ UART_HandleTypeDef* uart_get_handle(void)
  */
 UART_HandleTypeDef* uart2_get_handle(void)
 {
-    return &g_uart2_handle;
+    return &huart2;
 }
 
 /**
@@ -432,5 +433,5 @@ void uart2_irq_handler(void)
     }
     
     /* receive one byte */
-    (void)HAL_UART_Receive_IT(&g_uart2_handle, (uint8_t *)&g_uart2_buffer, 1);
+    (void)HAL_UART_Receive_IT(&huart2, (uint8_t *)&g_uart2_buffer, 1);
 }

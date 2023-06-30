@@ -105,11 +105,13 @@ int main(void)
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
 
+  //uart2_init(115200);
+
   uint8_t data[32] = "HELLO\n";
   uint8_t dat;
   uint8_t res;
+  char print_message[32];
 
-  /* basic init */
   res = w25qxx_basic_init(W25Q64, W25QXX_INTERFACE_SPI, W25QXX_BOOL_FALSE);
   if (res != 0)
   {
@@ -118,24 +120,22 @@ int main(void)
       return 1;
   }
 
-  /* read */
-  res = w25qxx_basic_read(0x0, (uint8_t *)&dat, 1);
-  if (res != 0)
-  {
-      (void)w25qxx_basic_deinit();
-      memcpy(data, "Failed to read!", 32);
-      HAL_UART_Transmit(&huart2, data, sizeof(data), 10);
-      return 1;
-  }
-  else
-  {
-      w25qxx_interface_debug_print("w25qxx: addr %d is %d.\n", 0x0, dat);
-  }
 
-  /* basic deinit */
-  (void)w25qxx_basic_deinit();
 
-  return 0;
+  //(void)w25qxx_basic_deinit();
+
+  //return 0;
+
+	__HAL_TIM_SET_COUNTER(&htim1,0);  // set the counter value a 0
+	int counterman = 0;
+	int cntval = 0;
+	while (__HAL_TIM_GET_COUNTER(&htim1) < 10){
+		counterman++;
+		cntval = __HAL_TIM_GET_COUNTER(&htim1);
+		// wait for the counter to reach the us input in the parameter
+	}
+
+  int address = 0;
 
   /* USER CODE END 2 */
 
@@ -146,7 +146,36 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	HAL_UART_Transmit(&huart2, data, sizeof(data), 10);
+      dat = (address % 256) & 0xFF;
+      res = w25qxx_basic_write(address, (uint8_t *)&dat, 1);
+      if (res != 0)
+      {
+          (void)w25qxx_basic_deinit();
+
+          return 1;
+      }
+      else
+      {
+		  sprintf(print_message,"w25qxx: addr %d is %d.\n", address, dat);
+		  HAL_UART_Transmit(&huart2, print_message, sizeof(print_message), 10);
+      }
+
+	  res = w25qxx_basic_read(0x0, (uint8_t *)&dat, 1);
+	  if (res != 0)
+	  {
+	      (void)w25qxx_basic_deinit();
+	      memcpy(data, "Failed to read!", 32);
+	      HAL_UART_Transmit(&huart2, data, sizeof(data), 10);
+	      return 1;
+	  }
+	  else
+	  {
+		  sprintf(print_message,"w25qxx: addr %d is %d.\n", address, dat);
+		  HAL_UART_Transmit(&huart2, print_message, sizeof(print_message), 10);
+		  //w25qxx_interface_debug_print("w25qxx: addr %d is %d.\n", 0x0, dat);
+	  }
+	  address++;
+	//HAL_UART_Transmit(&huart2, data, sizeof(data), 10);
 	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
