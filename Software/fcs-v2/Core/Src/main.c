@@ -50,6 +50,7 @@ QSPI_HandleTypeDef hqspi;
 SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
+UART_HandleTypeDef huart1;
 
 osThreadId consoleTaskHandle;
 osThreadId radioTaskHandle;
@@ -67,6 +68,7 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
+static void MX_USART1_UART_Init(void);
 void ConsoleTask(void const * argument);
 extern void RadioTask(void const * argument);
 extern void BuzzerTask(void const * argument);
@@ -77,6 +79,26 @@ extern void BuzzerTask(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+
+// Instantiate stdio putchar function for printf and friends
+
+#ifdef __GNUC__
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#else
+#define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
+#endif
+
+PUTCHAR_PROTOTYPE
+{
+  HAL_UART_Transmit(&console_uart, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
+
+void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName) {
+  HAL_UART_Transmit(&console_uart, (uint8_t *)"Stack overflow!\r\n", 17, HAL_MAX_DELAY);
+}
+
 
 /* USER CODE END 0 */
 
@@ -113,6 +135,7 @@ int main(void)
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_UART5_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -131,7 +154,7 @@ int main(void)
 
   /* Create the queue(s) */
   /* definition and creation of printQueue */
-  osMessageQDef(printQueue, 8, char *);
+  osMessageQDef(printQueue, 16, char *);
   printQueueHandle = osMessageCreate(osMessageQ(printQueue), NULL);
 
   /* USER CODE BEGIN RTOS_QUEUES */
@@ -140,7 +163,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of consoleTask */
-  osThreadDef(consoleTask, ConsoleTask, osPriorityNormal, 0, 128);
+  osThreadDef(consoleTask, ConsoleTask, osPriorityNormal, 0, 196);
   consoleTaskHandle = osThreadCreate(osThread(consoleTask), NULL);
 
   /* definition and creation of radioTask */
@@ -405,6 +428,39 @@ static void MX_UART5_Init(void)
   /* USER CODE BEGIN UART5_Init 2 */
 
   /* USER CODE END UART5_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 

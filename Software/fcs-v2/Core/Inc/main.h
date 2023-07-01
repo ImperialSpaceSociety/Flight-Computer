@@ -57,6 +57,7 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define console_uart huart1
 #define Acc_Int1_Pin GPIO_PIN_14
 #define Acc_Int1_GPIO_Port GPIOC
 #define Gyro_Int3_Pin GPIO_PIN_15
@@ -87,6 +88,10 @@ void Error_Handler(void);
 #define Flash_QUADSPI_BK1_IO0_GPIO_Port GPIOC
 #define Mag_Data_Ready_Pin GPIO_PIN_8
 #define Mag_Data_Ready_GPIO_Port GPIOA
+#define DEBUG_TX_Pin GPIO_PIN_9
+#define DEBUG_TX_GPIO_Port GPIOA
+#define DEBUG_RX_Pin GPIO_PIN_10
+#define DEBUG_RX_GPIO_Port GPIOA
 #define Flash_QUADSPI_BK1_IO1_Pin GPIO_PIN_10
 #define Flash_QUADSPI_BK1_IO1_GPIO_Port GPIOC
 #define GPS_Reset_Pin GPIO_PIN_11

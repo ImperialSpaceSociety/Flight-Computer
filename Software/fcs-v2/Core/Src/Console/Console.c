@@ -1,4 +1,6 @@
 
+#include "main.h"
+
 #include "Console.h"
 #include "cmsis_os.h"
 
@@ -52,3 +54,6 @@ osStatus dlog(const char *format, ...) {
 
 #endif
 }
+
+
+
