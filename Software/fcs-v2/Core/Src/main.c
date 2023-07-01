@@ -24,7 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "L80M39/L80M39.h"
-//#include "Console.h"
+#include "Console.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -51,6 +51,7 @@ QSPI_HandleTypeDef hqspi;
 SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
+DMA_HandleTypeDef hdma_uart5_rx;
 
 osThreadId consoleTaskHandle;
 osThreadId radioTaskHandle;
@@ -58,11 +59,14 @@ osThreadId buzzerTaskHandle;
 osThreadId gpsTaskHandle;
 osMessageQId printQueueHandle;
 /* USER CODE BEGIN PV */
+L80M39_t gps;
+uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_QUADSPI_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
@@ -74,20 +78,13 @@ extern void BuzzerTask(void const * argument);
 void GPSTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
-/*void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
-	char messageDat[30];
-	char messageLat[20];
-	char messageLon[20];
-	sprintf(messageDat, "\0012dat: %.2f\n\r", gps.datetime);
-    sprintf(messageLat, "\0012lat: %.2f\n\r", gps.latitude);
-    sprintf(messageLon, "\0012lon: %.2f\n\r", gps.longitude);
-    dlog(messageDat);
-    dlog(messageLat);
-    dlog(messageLon);
-    HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
-}*/
+	dlog(DLOG_INFO "dat: %.2f lat: %.8f lon: %.8f", gps.datetime, gps.latitude, gps.longitude);
+	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+}
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -123,13 +120,16 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_QUADSPI_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+  HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
+  HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -428,6 +428,22 @@ static void MX_UART5_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -521,25 +537,11 @@ __weak void ConsoleTask(void const * argument)
 void GPSTask(void const * argument)
 {
   /* USER CODE BEGIN GPSTask */
-  L80M39_t gps;
-  uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {};
   /* Infinite loop */
   for(;;)
   {
-	  L80M39_init(&gps);
-	  HAL_UART_Receive(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH, 5000);
-	  L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
-	  char messageDat[30];
-	  char messageLat[20];
-	  char messageLon[20];
-	  sprintf(messageDat, "\0012dat: %.2f\n\r", gps.datetime);
-	  sprintf(messageLat, "\0012lat: %.2f\n\r", gps.latitude);
-	  sprintf(messageLon, "\0012lon: %.2f\n\r", gps.longitude);
-	  dlog(messageDat);
-	  dlog(messageLat);
-	  dlog(messageLon);
 	  //osDelay(10000);
-	  /*osDelay(1000);*/
+	  osDelay(1000);
   }
   /* USER CODE END GPSTask */
 }

@@ -9,7 +9,7 @@ void RadioTask(void const * argument) {
 
   while (1) {
     dlog(DLOG_INFO "Hello, RadioTask!");
-    osDelay(5000);
+    osDelay(10000);
   }
 
 }
