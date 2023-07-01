@@ -9,7 +9,7 @@ void BuzzerTask(void const * argument) {
 
   while (1) {
     dlog(DLOG_INFO "Hello, BuzzerTask!");
-    osDelay(1500);
+    osDelay(5000);
   }
 
 }

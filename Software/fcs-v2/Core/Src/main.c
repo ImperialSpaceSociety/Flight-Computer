@@ -23,12 +23,13 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "L80M39/L80M39.h"
+//#include "Console.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define BUFFER_LENGTH 600
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -54,9 +55,9 @@ UART_HandleTypeDef huart5;
 osThreadId consoleTaskHandle;
 osThreadId radioTaskHandle;
 osThreadId buzzerTaskHandle;
+osThreadId gpsTaskHandle;
 osMessageQId printQueueHandle;
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -70,9 +71,23 @@ static void MX_UART5_Init(void);
 void ConsoleTask(void const * argument);
 extern void RadioTask(void const * argument);
 extern void BuzzerTask(void const * argument);
+void GPSTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
-
+/*void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
+	char messageDat[30];
+	char messageLat[20];
+	char messageLon[20];
+	sprintf(messageDat, "\0012dat: %.2f\n\r", gps.datetime);
+    sprintf(messageLat, "\0012lat: %.2f\n\r", gps.latitude);
+    sprintf(messageLon, "\0012lon: %.2f\n\r", gps.longitude);
+    dlog(messageDat);
+    dlog(messageLat);
+    dlog(messageLon);
+    HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+}*/
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -114,7 +129,7 @@ int main(void)
   MX_ADC1_Init();
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
-
+  //HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -150,6 +165,10 @@ int main(void)
   /* definition and creation of buzzerTask */
   osThreadDef(buzzerTask, BuzzerTask, osPriorityLow, 0, 128);
   buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
+
+  /* definition and creation of gpsTask */
+  osThreadDef(gpsTask, GPSTask, osPriorityNormal, 0, 128);
+  gpsTaskHandle = osThreadCreate(osThread(gpsTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -391,7 +410,7 @@ static void MX_UART5_Init(void)
 
   /* USER CODE END UART5_Init 1 */
   huart5.Instance = UART5;
-  huart5.Init.BaudRate = 115200;
+  huart5.Init.BaudRate = 9600;
   huart5.Init.WordLength = UART_WORDLENGTH_8B;
   huart5.Init.StopBits = UART_STOPBITS_1;
   huart5.Init.Parity = UART_PARITY_NONE;
@@ -490,6 +509,39 @@ __weak void ConsoleTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_GPSTask */
+/**
+* @brief Function implementing the gpsTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_GPSTask */
+void GPSTask(void const * argument)
+{
+  /* USER CODE BEGIN GPSTask */
+  L80M39_t gps;
+  uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {};
+  /* Infinite loop */
+  for(;;)
+  {
+	  L80M39_init(&gps);
+	  HAL_UART_Receive(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH, 5000);
+	  L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
+	  char messageDat[30];
+	  char messageLat[20];
+	  char messageLon[20];
+	  sprintf(messageDat, "\0012dat: %.2f\n\r", gps.datetime);
+	  sprintf(messageLat, "\0012lat: %.2f\n\r", gps.latitude);
+	  sprintf(messageLon, "\0012lon: %.2f\n\r", gps.longitude);
+	  dlog(messageDat);
+	  dlog(messageLat);
+	  dlog(messageLon);
+	  //osDelay(10000);
+	  /*osDelay(1000);*/
+  }
+  /* USER CODE END GPSTask */
 }
 
 /**

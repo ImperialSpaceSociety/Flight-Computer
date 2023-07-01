@@ -237,7 +237,6 @@ sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadC
 
     while ( !BIT(flags, 6) && !stop ) {
       //sx_sleep(BUSY_WAIT_DELAY);
-      HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
       if (osSignalWait(0x0001, BUSY_WAIT_DELAY).status == osEventSignal) {
         stop = 1;
       }
