@@ -1,68 +1,75 @@
 
 .DS_Store
 
-.project
-.mxproject
 Debug/
 Release/
-
-# Eclipse .gitignore template
-
 .metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.recommenders
 
-# External tool builders
-.externalToolBuilders/
+# https://github.com/github/gitignore/blob/master/C.gitignore
 
-# Locally stored "Eclipse launch configurations"
-*.launch
+# Prerequisites
+*.d
 
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
 
-# CDT-specific (C/C++ Development Tooling)
-.cproject
+# Linker output
+*.ilk
+*.map
+*.exp
 
-# CDT- autotools
-.autotools
+# Precompiled Headers
+*.gch
+*.pch
 
-# Java annotation processor (APT)
-.factorypath
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
 
-# PDT-specific (PHP Development Tools)
-.buildpath
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
 
-# sbteclipse plugin
-.target
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
 
-# Tern plugin
-.tern-project
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
 
-# TeXlipse plugin
-.texlipse
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
 
-# STS (Spring Tool Suite)
-.springBeans
+# cscope with Vim
+cscope.*
 
-# Code Recommenders
-.recommenders/
+#ctags with Vim
+tags
+types_c.taghl
 
-# Annotation Processing
-.apt_generated/
-.apt_generated_test/
+#CtrlP
+ctrlp.root
 
-# Scala IDE specific (Scala & Java development for Eclipse)
-.cache-main
-.scala_dependencies
-.worksheet
-
+#html
+*.html
 
