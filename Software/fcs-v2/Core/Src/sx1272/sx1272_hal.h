@@ -4,7 +4,6 @@
     platform dependent functions
  */
 
-
 #ifndef _sx_hal_h
 #define _sx_hal_h
 
@@ -38,7 +37,5 @@ void sx_sleep(uint32_t ms);
 
 // Debug logging function
 void sx_dlog(const char *format, ...);
-
-
 
 #endif

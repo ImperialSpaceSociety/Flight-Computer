@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "L80M39/L80M39.h"
+#include "sx1272/sx1272.h"
 #include "Console.h"
 /* USER CODE END Includes */
 
@@ -128,8 +129,37 @@ int main(void)
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
-  HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+  HAL_GPIO_WritePin(Radio_Reset_GPIO_Port, Radio_Reset_Pin, 0);
+  //HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
 
+  sx1272_t sx;
+	sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
+
+	sx_cs_gpio = (sx_gpio_t) {
+		.port = Radio_Enable_GPIO_Port,
+		.pin = Radio_Enable_Pin,
+	};
+
+	sx_tx_gpio = (sx_gpio_t) {
+		.port = Radio_TX_GPIO_Port,
+		.pin = Radio_TX_Pin,
+	};
+
+	sx_rx_gpio = (sx_gpio_t) {
+		.port = Radio_RX_GPIO_Port,
+		.pin = Radio_RX_Pin,
+	};
+
+	// Init device structure
+
+	sx = (sx1272_t) {
+			.spi = &hspi1,
+			.cs_gpio = &sx_cs_gpio,
+			.tx_gpio = &sx_tx_gpio,
+			.rx_gpio = &sx_rx_gpio,
+			.packet_length = 16,
+	};
+	int status = sx1272_common_init(&sx, 1);
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */

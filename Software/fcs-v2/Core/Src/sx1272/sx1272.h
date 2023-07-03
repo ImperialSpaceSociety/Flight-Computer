@@ -1,5 +1,3 @@
-
-
 #ifndef _sx1272_h
 #define _sx1272_h
 
@@ -11,9 +9,9 @@
 // 5ms delay between each r/w to a register
 // This is not specified by the datasheet, but
 // we do it for good measure.
-#define REG_RW_DELAY 5
+#define REG_RW_DELAY 0
 
-#define BUSY_WAIT_DELAY 5
+#define BUSY_WAIT_DELAY 10
 
 enum sx_status {
   SX_OK,

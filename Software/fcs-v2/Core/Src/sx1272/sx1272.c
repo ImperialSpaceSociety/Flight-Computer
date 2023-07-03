@@ -1,8 +1,3 @@
-
-#include "cmsis_os.h"
-
-#include "main.h"
-
 #include "sx1272.h"
 #include "sx1272_regs.h"
 #include "sx1272_hal.h"
@@ -10,9 +5,7 @@
 #include <string.h>
 #include <assert.h>
 
-#define UNUSED_ __attribute__((unused))
 #define BIT(val, bit) (((val) >> (bit)) & 1)
-
 
 static bool write_reg(sx1272_t *dev, uint8_t reg, uint8_t value) {
   uint8_t data[] = {reg | 0x80, value};
@@ -30,31 +23,6 @@ static uint8_t read_reg(sx1272_t *dev, uint8_t reg) {
   sx_gpio_write(dev->cs_gpio, 1);
   sx_sleep(REG_RW_DELAY);
   return reg;
-}
-
-// write value into [msb:lsb] of register
-static UNUSED_ bool write_reg_bits(sx1272_t *dev, uint8_t reg,
-                           unsigned int msb, unsigned int lsb,
-                           uint8_t value) {
-
-  uint8_t orig = read_reg(dev, reg);
-  uint8_t mask = ~(0xffu << (msb+1)) & (0xffu << lsb);
-  value = (value << lsb) & mask;
-  value = (orig & ~mask) | value;
-  int ret = write_reg(dev, reg, value);
-  sx_sleep(REG_RW_DELAY);
-  return ret;
-}
-
-// read [msb:lsb] bits of register
-static UNUSED_ bool read_reg_bits(sx1272_t *dev, uint8_t reg,
-                           unsigned int msb, unsigned int lsb) {
-
-  uint8_t value = read_reg(dev, reg);
-  uint8_t mask = ~(0xffu << (msb+1)) & (0xffu << lsb);
-  value = (value & mask) >> lsb;
-  sx_sleep(REG_RW_DELAY);
-  return value;
 }
 
 int sx1272_common_init(sx1272_t *dev, bool crcOn) {
@@ -81,17 +49,18 @@ int sx1272_common_init(sx1272_t *dev, bool crcOn) {
   // 125kHz bandwidth, 4/5 coding rate, implicit header, CRC on
   write_reg(dev, SxLoraRegModemConfig1, 0x0c | (crcOn << 1));
 
-  // Spreading factor 9, AgcAutoOn
-  // write_reg(dev, SxLoraRegModemConfig2, 0x94);
+  // Set rx timeout multiplier to 1023
 
-  // Set payload length
+  // Timeout = multiplier * 2^(Spreading Factor) / (Bandwidth)
+  //         = 1023 * 2^7 / 125000 = 1.05s
+
+  uint8_t tmp = read_reg(dev, SxLoraRegModemConfig2);
+  tmp = tmp | 0x03;   // Set multiplier MSB
+  write_reg(dev, SxLoraRegModemConfig2, tmp);
+  write_reg(dev, SxLoraRegSymbTimeoutLsb, 0xff);  // Set multiplier LSB
+
   write_reg(dev, SxLoraRegPayloadLength, dev->packet_length);
   write_reg(dev, SxLoraRegMaxPayloadLength, dev->packet_length);
-
-  // Set high power mode (+20 dBm on PA_BOOST)
-   write_reg(dev, SxRegPaConfig, 0x8f);
-   write_reg(dev, SxRegPaDac, 0x87);
-   write_reg(dev, SxRegOcp, 0x39);   // Enable over current protection, max 170mA
 
   // Mask all IRQs except RxTimeout, RxDone, PayloadCrcError, TxDone
   write_reg(dev, SxLoraRegIrqFlagsMask, 0x17);
@@ -100,7 +69,6 @@ int sx1272_common_init(sx1272_t *dev, bool crcOn) {
   write_reg(dev, SxLoraRegIrqFlags, 0xff);
 
   // Clear FIFO
-  /*
   uint8_t fifoAddr = SxRegFifo | 0x80;
   uint8_t dummy[256];
   memset(dummy, 0, 256);
@@ -109,7 +77,6 @@ int sx1272_common_init(sx1272_t *dev, bool crcOn) {
   sx_spi_write(&fifoAddr, 1, dev->spi);
   sx_spi_write(dummy, 256, dev->spi);
   sx_gpio_write(dev->cs_gpio, 1);
-  */
 
   return 0;
 }
@@ -139,6 +106,7 @@ sx_status_t sx1272_transmit(sx1272_t *dev, uint8_t *buf) {
 
   // Busy wait until TxDone
   while ( ! BIT(read_reg(dev, SxLoraRegIrqFlags), 3) ) {
+	  printf("sx_sleep");
     sx_sleep(BUSY_WAIT_DELAY);
   }
 
@@ -211,10 +179,7 @@ early_exit:
 
 sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadCrc) {
 
-  //return 0;
-
   int ret = SX_OK;
-  int stop = 0;
 
   // Set Dio0 to active high if RxDone
   // (Not in use for now)
@@ -234,12 +199,8 @@ sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadC
 
     // Busy wait until RxDone
     int flags = read_reg(dev, SxLoraRegIrqFlags);
-
-    while ( !BIT(flags, 6) && !stop ) {
-      //sx_sleep(BUSY_WAIT_DELAY);
-      if (osSignalWait(0x0001, BUSY_WAIT_DELAY).status == osEventSignal) {
-        stop = 1;
-      }
+    while ( ! BIT(flags, 6) ) {
+      sx_sleep(BUSY_WAIT_DELAY);
       flags = read_reg(dev, SxLoraRegIrqFlags);
     }
 
@@ -259,15 +220,10 @@ sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadC
     write_reg(dev, SxLoraRegFifoRxByteAddr, 0x00);
     */
 
-  } while (denyBadCrc && badCrc && !stop);
+  } while (denyBadCrc && badCrc);
 
   // Standby mode
   write_reg(dev, SxRegOpMode, 0x81);
-
-  if (stop) {
-    ret = SX_TIMEOUT;
-    goto early_exit;
-  }
 
   // Read data from FIFO
 
@@ -279,6 +235,7 @@ sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadC
   sx_gpio_write(dev->cs_gpio, 0);
   sx_spi_write(&fifoAddr, 1, dev->spi);
   sx_spi_read(buf, dev->packet_length, dev->spi);
+  //sx_spi_read(buf, 256, dev->spi);
   sx_gpio_write(dev->cs_gpio, 1);
 
   if (badCrc) {
@@ -311,17 +268,3 @@ int sx1272_packet_snr(sx1272_t *dev) {
 void sx1272_interrupt_handler(sx1272_t *dev) {
   dev->opDone = true;
 }
-
-/*
-// Set rx timeout multiplier to 1023
-// Timeout = multiplier * 2^(Spreading Factor) / (Bandwidth)
-//         = 1023 * 2^7 / 125000 = 1.05s
-uint8_t tmp = read_reg(dev, SxLoraRegModemConfig2);
-tmp = tmp | 0x03;   // Set multiplier MSB
-write_reg(dev, SxLoraRegModemConfig2, tmp);
-write_reg(dev, SxLoraRegSymbTimeoutLsb, 0xff);  // Set multiplier LSB
-*/
-
-
-
-

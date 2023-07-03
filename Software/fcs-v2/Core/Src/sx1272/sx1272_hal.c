@@ -1,9 +1,7 @@
-
 #include "sx1272_hal.h"
 #include "sx1272.h"
 
 #include "stm32f4xx_hal.h"
-#include "cmsis_os.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -22,7 +20,7 @@ int sx_spi_read(uint8_t *buf, uint16_t size, void *spi) {
 }
 
 void sx_sleep(uint32_t ms) {
-  osDelay(ms);
+  HAL_Delay(ms);
 }
 
 void sx_dlog(const char *format, ...) {
@@ -36,4 +34,3 @@ void sx_dlog(const char *format, ...) {
 
   va_end(args);
 }
-

@@ -1,10 +1,8 @@
-
 enum sx1272_common_regs {
 
   SxRegFifo = 0x00,
   SxRegOpMode,
-
-  SxRegFrfMsb = 0x06,
+  SxRegFrfMsb,
   SxRegFrfMib,
   SxRegFrfLsb,
   SxRegPaConfig,
@@ -15,8 +13,6 @@ enum sx1272_common_regs {
   SxRegDioMapping1 = 0x40,
   SxRegDioMapping2,
   SxRegVersion,
-
-  SxRegPaDac = 0x5A,
 };
 
 enum sx1272_regs_lora {
