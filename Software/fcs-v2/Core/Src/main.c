@@ -24,7 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "L80M39/L80M39.h"
-#include "sx1272/sx1272.h"
+#include "sx1272.h"
 #include "Console.h"
 /* USER CODE END Includes */
 
@@ -129,7 +129,7 @@ int main(void)
   MX_UART5_Init();
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
-  HAL_GPIO_WritePin(Radio_Reset_GPIO_Port, Radio_Reset_Pin, 0);
+  //HAL_GPIO_WritePin(Radio_Reset_GPIO_Port, Radio_Reset_Pin, 0);
   //HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
 
   sx1272_t sx;
@@ -409,7 +409,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

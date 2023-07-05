@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -26,7 +25,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "usbd_cdc_if.h"
-
+#include "sx1272.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,9 +53,6 @@ SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
 
-osThreadId defaultTaskHandle;
-osThreadId buzzerTaskHandle;
-osThreadId loggingTaskHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -69,17 +65,15 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
-void StartDefaultTask(void const * argument);
-void StartBuzzer(void const * argument);
-void StartLogging(void const * argument);
-
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+sx1272_t sx;
+sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
+uint8_t buf[256] = "Hello, world!";
 /* USER CODE END 0 */
 
 /**
@@ -115,54 +109,59 @@ int main(void)
   MX_SPI1_Init();
   MX_ADC1_Init();
   MX_UART5_Init();
+  MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+	//HAL_GPIO_WritePin(Radio_Enable_GPIO_Port, Radio_Enable_Pin, SET);
+  sx_cs_gpio = (sx_gpio_t) {
+		.port = Radio_Enable_GPIO_Port,
+		.pin = Radio_Enable_Pin,
+	};
 
+	sx_tx_gpio = (sx_gpio_t) {
+		.port = Radio_TX_GPIO_Port,
+		.pin = Radio_TX_Pin,
+	};
+
+	sx_rx_gpio = (sx_gpio_t) {
+		.port = Radio_RX_GPIO_Port,
+		.pin = Radio_RX_Pin,
+	};
+
+	// Init device structure
+
+	sx = (sx1272_t) {
+			.spi = &hspi1,
+			.cs_gpio = &sx_cs_gpio,
+			.tx_gpio = &sx_tx_gpio,
+			.rx_gpio = &sx_rx_gpio,
+			.packet_length = 16,
+	};
+
+	/*printf("tx (1), rx (2), tx_no_crc (3), echo_src (4), echo_wall (5) ? ");
+	fflush(stdout);*/
+	int status = sx1272_common_init(&sx, false);
   /* USER CODE END 2 */
 
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
-
-  /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* definition and creation of buzzerTask */
-  osThreadDef(buzzerTask, StartBuzzer, osPriorityNormal, 0, 128);
-  buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
-
-  /* definition and creation of loggingTask */
-  osThreadDef(loggingTask, StartLogging, osPriorityLow, 0, 128);
-  loggingTaskHandle = osThreadCreate(osThread(loggingTask), NULL);
-
-  /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
-
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  char test_message[50];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+//	// Buzzer ON
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
+//	HAL_Delay(1);
+//	// Buzzer OFF
+//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
+//	HAL_Delay(1);
+	int ret = sx1272_transmit(&sx, buf);
+
+	sprintf(test_message, "Tx status: %d\r\n", ret);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -252,7 +251,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Channel = ADC_CHANNEL_14;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
@@ -357,7 +356,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -425,10 +424,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, Radio_RX_Pin|Buzzer_Gate_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Radio_Reset_Pin|Indicator_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, Radio_Enable_Pin|GPS_Reset_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, Radio_Reset_Pin|Indicator_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : Acc_Int1_Pin Gyro_Int3_Pin Radio_DIO2_Pin Radio_DIO5_Pin
                            Radio_DIO4_Pin Radio_DIO3_Pin */
@@ -451,6 +450,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : Radio_Enable_Pin GPS_Reset_Pin */
+  GPIO_InitStruct.Pin = Radio_Enable_Pin|GPS_Reset_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pins : Radio_Reset_Pin Indicator_LED_Pin */
   GPIO_InitStruct.Pin = Radio_Reset_Pin|Indicator_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -458,105 +464,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : GPS_Reset_Pin */
-  GPIO_InitStruct.Pin = GPS_Reset_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPS_Reset_GPIO_Port, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
-
-/* USER CODE BEGIN Header_StartDefaultTask */
-/**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
-{
-  /* init code for USB_DEVICE */
-  MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {}
-  /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_StartBuzzer */
-/**
-* @brief Function implementing the buzzer thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartBuzzer */
-void StartBuzzer(void const * argument)
-{
-  /* USER CODE BEGIN StartBuzzer */
-  /* Infinite loop */
-  for(;;)
-  {
-    /*
-    // Buzzer ON
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
-    osDelay(1);
-    // Buzzer OFF
-    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-    osDelay(1);
-    */
-    osDelay(1000);
-  }
-  /* USER CODE END StartBuzzer */
-}
-
-/* USER CODE BEGIN Header_StartLogging */
-/**
-  * @brief  Function implementing the loggingTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartLogging */
-void StartLogging(void const * argument)
-{
-  /* USER CODE BEGIN StartLogging */
-	char test_message[50];
-	int cnt = 0;
-  /* Infinite loop */
-  for(;;)
-  {
-    sprintf(test_message, "Hello World: %d\r\n", cnt);
-    CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-    osDelay(1000);
-  }
-  /* USER CODE END StartLogging */
-}
-
-/**
-  * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
-  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
-  * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
-    HAL_IncTick();
-  }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
-}
 
 /**
   * @brief  This function is executed in case of error occurrence.
