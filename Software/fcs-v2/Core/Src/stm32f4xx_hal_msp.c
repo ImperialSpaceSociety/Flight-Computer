@@ -99,12 +99,11 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     __HAL_RCC_GPIOC_CLK_ENABLE();
     /**ADC1 GPIO Configuration
     PC4     ------> ADC1_IN14
-    PC5     ------> ADC1_IN15
     */
-    GPIO_InitStruct.Pin = Battery_Voltage_Pin|Radio_Enable_Pin;
+    GPIO_InitStruct.Pin = Battery_Voltage_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    HAL_GPIO_Init(Battery_Voltage_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN ADC1_MspInit 1 */
 
@@ -131,9 +130,8 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 
     /**ADC1 GPIO Configuration
     PC4     ------> ADC1_IN14
-    PC5     ------> ADC1_IN15
     */
-    HAL_GPIO_DeInit(GPIOC, Battery_Voltage_Pin|Radio_Enable_Pin);
+    HAL_GPIO_DeInit(Battery_Voltage_GPIO_Port, Battery_Voltage_Pin);
 
   /* USER CODE BEGIN ADC1_MspDeInit 1 */
 
