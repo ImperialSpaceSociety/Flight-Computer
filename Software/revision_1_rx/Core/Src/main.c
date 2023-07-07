@@ -144,7 +144,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  char test_message[50];
+  char test_message1[50];
+  char test_message2[50];
+  char test_message3[50];
+  char test_message4[50];
   while (1)
   {
     /* USER CODE END WHILE */
@@ -160,24 +163,23 @@ int main(void)
 	int ret = sx1272_receive_continuous(&sx, buf, true);
 
 	//HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "RX status: %d\r\n", ret);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message1, "RX status: %d\r\n", ret);
+	CDC_Transmit_FS((uint8_t*) test_message1, strlen(test_message1));
 
-	unsigned int counter = buf[3] << 24 | buf[2] << 16 | buf[1] << 8 | buf[0];
-	sprintf(test_message, "Counter: %d\r\n", buf);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	int counter = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
+
+	//sprintf(test_message2, "Counter");
+	//CDC_Transmit_FS((uint8_t*) test_message2, strlen(test_message2));
 
 	int current_rssi = sx1272_current_rssi(&sx);
 	int current_snr = sx1272_packet_snr(&sx);
 
-	sprintf(test_message, "RSSI: %d\n\r", current_rssi);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "SNR: %d\n\r", current_snr);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message3, "RSSI: %d\n\r", current_rssi);
+	CDC_Transmit_FS((uint8_t*) test_message3, strlen(test_message3));
+	sprintf(test_message4, "SNR: %d\n\r", current_snr);
+	CDC_Transmit_FS((uint8_t*) test_message4, strlen(test_message4));
 
 	memset(buf, 0, 16);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	HAL_Delay(100);
   }
   /* USER CODE END 3 */

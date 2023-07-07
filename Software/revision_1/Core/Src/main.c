@@ -26,6 +26,7 @@
 #include "stdlib.h"
 #include "usbd_cdc_if.h"
 #include "sx1272.h"
+#include "L80M39.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,6 +36,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define BUFFER_LENGTH 600
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,28 +54,39 @@ QSPI_HandleTypeDef hqspi;
 SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
+DMA_HandleTypeDef hdma_uart5_rx;
 
 /* USER CODE BEGIN PV */
-
+L80M39_t gps;
+uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {0};
+sx1272_t sx;
+sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
+uint8_t buf[256] = "Hello, world!";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_QUADSPI_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
 /* USER CODE BEGIN PFP */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
+	char test_message[50];
+	sprintf(test_message, "dat: %.2f lat: %.8f lon: %.8f", gps.datetime, gps.latitude, gps.longitude);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-sx1272_t sx;
-sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
-uint8_t buf[256] = "Hello, world!";
+
 /* USER CODE END 0 */
 
 /**
@@ -104,6 +117,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_QUADSPI_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
@@ -140,28 +154,40 @@ int main(void)
 	/*printf("tx (1), rx (2), tx_no_crc (3), echo_src (4), echo_wall (5) ? ");
 	fflush(stdout);*/
 	int status = sx1272_common_init(&sx, false);
+	HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
+	L80M39_init(&gps);
+	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  unsigned int counter = 0;
   char test_message[50];
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-//	// Buzzer ON
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET);
-//	HAL_Delay(1);
-//	// Buzzer OFF
-//	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET);
-//	HAL_Delay(1);
-	int ret = sx1272_transmit(&sx, buf);
+	  unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
+	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
+	  buf[0] = counter & 0xff;
+	  buf[1] = (counter >> 8) & 0xff;
+	  buf[2] = (counter >> 16) & 0xff;
+	  buf[3] = (counter >> 24) & 0xff;
+	  buf[4] = latitudeInt & 0xff;
+	  buf[5] = (latitudeInt >> 8) & 0xff;
+	  buf[6] = (latitudeInt >> 16) & 0xff;
+	  buf[7] = (latitudeInt >> 24) & 0xff;
+	  buf[8] = longitudeInt & 0xff;
+	  buf[9] = (longitudeInt >> 8) & 0xff;
+	  buf[10] = (longitudeInt >> 16) & 0xff;
+	  buf[11] = (longitudeInt >> 24) & 0xff;
+	  int ret = sx1272_transmit(&sx, buf);
 
 	sprintf(test_message, "Tx status: %d\r\n", ret);
 	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	HAL_Delay(100);
+	counter++;
   }
   /* USER CODE END 3 */
 }
@@ -387,7 +413,7 @@ static void MX_UART5_Init(void)
 
   /* USER CODE END UART5_Init 1 */
   huart5.Instance = UART5;
-  huart5.Init.BaudRate = 115200;
+  huart5.Init.BaudRate = 9600;
   huart5.Init.WordLength = UART_WORDLENGTH_8B;
   huart5.Init.StopBits = UART_STOPBITS_1;
   huart5.Init.Parity = UART_PARITY_NONE;
@@ -401,6 +427,22 @@ static void MX_UART5_Init(void)
   /* USER CODE BEGIN UART5_Init 2 */
 
   /* USER CODE END UART5_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
 
 }
 
