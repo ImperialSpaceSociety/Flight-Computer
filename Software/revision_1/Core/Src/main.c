@@ -170,6 +170,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
 	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
+	  unsigned int dataInt = *(unsigned int*)&gps.datetime;
 	  buf[0] = counter & 0xff;
 	  buf[1] = (counter >> 8) & 0xff;
 	  buf[2] = (counter >> 16) & 0xff;
@@ -182,10 +183,20 @@ int main(void)
 	  buf[9] = (longitudeInt >> 8) & 0xff;
 	  buf[10] = (longitudeInt >> 16) & 0xff;
 	  buf[11] = (longitudeInt >> 24) & 0xff;
+	  buf[12] = dataInt & 0xff;
+	  buf[13] = (dataInt >> 8) & 0xff;
+	  buf[14] = (dataInt >> 16) & 0xff;
+	  buf[15] = (dataInt >> 24) & 0xff;
 	  int ret = sx1272_transmit(&sx, buf);
 
 	sprintf(test_message, "Tx status: %d\r\n", ret);
 	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "Datetime: %x\n\r", dataInt);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "Latitude: %x\n\r", latitudeInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "Longitude: %x\n\r", longitudeInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	HAL_Delay(100);
 	counter++;
   }

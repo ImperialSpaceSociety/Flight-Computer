@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-void sx_gpio_write(sx_gpio_t *gpio, int value) {
+void sx_gpio_write(sx_gpio_t *gpio, bool value) {
   HAL_GPIO_WritePin(gpio->port, gpio->pin, value);
 }
 

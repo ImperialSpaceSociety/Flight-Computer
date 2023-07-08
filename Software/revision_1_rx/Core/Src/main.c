@@ -74,6 +74,14 @@ static void MX_UART5_Init(void);
 sx1272_t sx;
 sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
 uint8_t buf[256] = {};
+int _write(int32_t file, uint8_t *ptr, int32_t len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        ITM_SendChar(*ptr++);
+    }
+    return len;
+}
 /* USER CODE END 0 */
 
 /**
@@ -111,6 +119,7 @@ int main(void)
   MX_UART5_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+
 	//HAL_GPIO_WritePin(Radio_Enable_GPIO_Port, Radio_Enable_Pin, SET);
   sx_cs_gpio = (sx_gpio_t) {
 		.port = Radio_Enable_GPIO_Port,
@@ -163,10 +172,22 @@ int main(void)
 	int ret = sx1272_receive_continuous(&sx, buf, true);
 
 	//HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
-	sprintf(test_message1, "RX status: %d\r\n", ret);
-	CDC_Transmit_FS((uint8_t*) test_message1, strlen(test_message1));
+	//sprintf(test_message1, "RX status: %d\r\n", ret);
+	//CDC_Transmit_FS((uint8_t*) test_message1, strlen(test_message1));
+	printf("RX status: %d\r\n", ret);
 
-	int counter = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
+	unsigned int counter = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
+	unsigned int latitude = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
+	unsigned int longitude = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
+	unsigned int datetime = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
+	float latitudeFloat = *(float*)&latitude;
+	float longitudeFloat = *(float*)&longitude;
+	float datetimeFloat = *(float*)&datetime;
+
+	printf("Counter: %x\n\r", counter);
+	printf("Latitude: %x (%f)\n\r", latitude, latitudeFloat);
+	printf("Longitude: %x (%f)\n\r", longitude, longitudeFloat);
+	printf("Datetime: %x (%f)\n\r", datetime, datetimeFloat);
 
 	//sprintf(test_message2, "Counter");
 	//CDC_Transmit_FS((uint8_t*) test_message2, strlen(test_message2));
@@ -174,10 +195,13 @@ int main(void)
 	int current_rssi = sx1272_current_rssi(&sx);
 	int current_snr = sx1272_packet_snr(&sx);
 
-	sprintf(test_message3, "RSSI: %d\n\r", current_rssi);
-	CDC_Transmit_FS((uint8_t*) test_message3, strlen(test_message3));
-	sprintf(test_message4, "SNR: %d\n\r", current_snr);
-	CDC_Transmit_FS((uint8_t*) test_message4, strlen(test_message4));
+//	sprintf(test_message3, "RSSI: %d\n\r", current_rssi);
+//	CDC_Transmit_FS((uint8_t*) test_message3, strlen(test_message3));
+//	sprintf(test_message4, "SNR: %d\n\r", current_snr);
+//	CDC_Transmit_FS((uint8_t*) test_message4, strlen(test_message4));
+
+	printf("RSSI: %d\n\r", current_rssi);
+	printf("SNR: %d\n\r", current_snr);
 
 	memset(buf, 0, 16);
 	HAL_Delay(100);
