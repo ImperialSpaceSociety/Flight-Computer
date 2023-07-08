@@ -278,7 +278,7 @@ int main(void)
 		temperature = comp_data.temperature / 100.0;
 		humidity = comp_data.humidity / 1024.0;
 		pressure = comp_data.pressure / 10000.0;
-		sprintf(test_message, "temperature: %4.2f %4.2f %4.2f\r\n", temperature, humidity, pressure);
+		sprintf(test_message, "temperature: %4.2f, humidity: %4.2f, pressure: %4.2f\r\n", temperature, humidity, pressure);
 		CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	  } else {
 //		  if (HAL_UART_Transmit(&huart2, "Error ", 6, 100)) {
@@ -290,8 +290,8 @@ int main(void)
 
 	HAL_Delay(100);
 	counter++;
-	if(counter == 10) {
-		//HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+	if(counter == 200) {
+		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	}
   }
   /* USER CODE END 3 */
