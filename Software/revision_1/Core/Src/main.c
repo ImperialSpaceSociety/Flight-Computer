@@ -27,6 +27,7 @@
 #include "usbd_cdc_if.h"
 #include "sx1272.h"
 #include "L80M39.h"
+#include "bme280.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -65,6 +66,17 @@ uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {0};
 sx1272_t sx;
 sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
 uint8_t buf[256] = "Hello, world!";
+float temperature;
+float humidity;
+float pressure;
+
+struct bme280_dev dev;
+struct bme280_data comp_data;
+int8_t rslt;
+
+char hum_string[50];
+char temp_string[50];
+char press_string[50];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,6 +110,31 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int8_t user_i2c_read(uint8_t id, uint8_t reg_addr, uint8_t *data, uint16_t len)
+{
+  if(HAL_I2C_Master_Transmit(&hi2c1, (id << 1), &reg_addr, 1, 10) != HAL_OK) return -1;
+  if(HAL_I2C_Master_Receive(&hi2c1, (id << 1) | 0x01, data, len, 10) != HAL_OK) return -1;
+
+  return 0;
+}
+
+void user_delay_ms(uint32_t period)
+{
+  HAL_Delay(period);
+}
+
+int8_t user_i2c_write(uint8_t id, uint8_t reg_addr, uint8_t *data, uint16_t len)
+{
+  int8_t *buf;
+  buf = malloc(len +1);
+  buf[0] = reg_addr;
+  memcpy(buf +1, data, len);
+
+  if(HAL_I2C_Master_Transmit(&hi2c1, (id << 1), (uint8_t*)buf, len + 1, HAL_MAX_DELAY) != HAL_OK) return -1;
+
+  free(buf);
+  return 0;
+}
 
 /* USER CODE END 0 */
 
@@ -141,7 +178,25 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //__HAL_TIM_CLEAR_IT(&htim6, TIM_IT_UPDATE);
   //HAL_TIM_Base_Start_IT(&htim6);
+
+  /* BME280 init */
+    dev.dev_id = BME280_I2C_ADDR_PRIM;
+    dev.intf = BME280_I2C_INTF;
+    dev.read = user_i2c_read;
+    dev.write = user_i2c_write;
+    dev.delay_ms = user_delay_ms;
+
+    rslt = bme280_init(&dev);
+
+    /* BME280 settings */
+    dev.settings.osr_h = BME280_OVERSAMPLING_1X;
+    dev.settings.osr_p = BME280_OVERSAMPLING_16X;
+    dev.settings.osr_t = BME280_OVERSAMPLING_2X;
+    dev.settings.filter = BME280_FILTER_COEFF_16;
+    rslt = bme280_set_sensor_settings(BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_FILTER_SEL, &dev);
+
 	//HAL_GPIO_WritePin(Radio_Enable_GPIO_Port, Radio_Enable_Pin, SET);
+
   sx_cs_gpio = (sx_gpio_t) {
 		.port = Radio_Enable_GPIO_Port,
 		.pin = Radio_Enable_Pin,
@@ -213,10 +268,30 @@ int main(void)
 //	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 //	sprintf(test_message, "Longitude: %x\n\r", longitudeInt);
 //	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+
+	  rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, &dev);
+	  dev.delay_ms(40);
+	  /*Get Data */
+	  rslt = bme280_get_sensor_data(BME280_ALL, &comp_data, &dev);
+	  if(rslt == BME280_OK)
+	  {
+		temperature = comp_data.temperature / 100.0;
+		humidity = comp_data.humidity / 1024.0;
+		pressure = comp_data.pressure / 10000.0;
+		sprintf(test_message, "temperature: %4.2f %4.2f %4.2f\r\n", temperature, humidity, pressure);
+		CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	  } else {
+//		  if (HAL_UART_Transmit(&huart2, "Error ", 6, 100)) {
+//			  Error_Handler();
+//			  HAL_Delay(500);
+//		  }
+	  }
+
+
 	HAL_Delay(100);
 	counter++;
 	if(counter == 10) {
-		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
+		//HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	}
   }
   /* USER CODE END 3 */
