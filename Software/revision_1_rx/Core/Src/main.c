@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdint.h"
 #include "usbd_cdc_if.h"
 #include "sx1272.h"
 /* USER CODE END Includes */
@@ -52,6 +53,7 @@ QSPI_HandleTypeDef hqspi;
 SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
+UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
@@ -65,6 +67,7 @@ static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -118,6 +121,7 @@ int main(void)
   MX_ADC1_Init();
   MX_UART5_Init();
   MX_USB_DEVICE_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
 	//HAL_GPIO_WritePin(Radio_Enable_GPIO_Port, Radio_Enable_Pin, SET);
@@ -157,6 +161,7 @@ int main(void)
   char test_message2[50];
   char test_message3[50];
   char test_message4[50];
+  char uart_buffer[100]; //Data to send
   while (1)
   {
     /* USER CODE END WHILE */
@@ -174,7 +179,9 @@ int main(void)
 	//HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 	//sprintf(test_message1, "RX status: %d\r\n", ret);
 	//CDC_Transmit_FS((uint8_t*) test_message1, strlen(test_message1));
-	printf("RX status: %d\r\n", ret);
+	//printf("RX status: %d\r\n", ret);
+	sprintf(uart_buffer, "RX status: %d\r\n", ret);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 
 	unsigned int counter = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
 	unsigned int latitude = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
@@ -184,10 +191,18 @@ int main(void)
 	float longitudeFloat = *(float*)&longitude;
 	float datetimeFloat = *(float*)&datetime;
 
-	printf("Counter: %x\n\r", counter);
-	printf("Latitude: %x (%f)\n\r", latitude, latitudeFloat);
-	printf("Longitude: %x (%f)\n\r", longitude, longitudeFloat);
-	printf("Datetime: %x (%f)\n\r", datetime, datetimeFloat);
+//	printf("Counter: %x\n\r", counter);
+//	printf("Latitude: %x (%f)\n\r", latitude, latitudeFloat);
+//	printf("Longitude: %x (%f)\n\r", longitude, longitudeFloat);
+//	printf("Datetime: %x (%f)\n\r", datetime, datetimeFloat);
+	sprintf(uart_buffer, "Counter: %x\r\n", counter);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+	sprintf(uart_buffer, "Latitude: %f\r\n", latitudeFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+	sprintf(uart_buffer, "Longitude: %f\r\n", longitudeFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+	sprintf(uart_buffer, "Datetime: %f\r\n", datetimeFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 
 	//sprintf(test_message2, "Counter");
 	//CDC_Transmit_FS((uint8_t*) test_message2, strlen(test_message2));
@@ -200,8 +215,13 @@ int main(void)
 //	sprintf(test_message4, "SNR: %d\n\r", current_snr);
 //	CDC_Transmit_FS((uint8_t*) test_message4, strlen(test_message4));
 
-	printf("RSSI: %d\n\r", current_rssi);
-	printf("SNR: %d\n\r", current_snr);
+	//printf("RSSI: %d\n\r", current_rssi);
+	//printf("SNR: %d\n\r", current_snr);
+
+	sprintf(uart_buffer, "RSSI: %d\r\n", current_rssi);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+	sprintf(uart_buffer, "SNR: %d\r\n", current_snr);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 
 	memset(buf, 0, 16);
 	HAL_Delay(100);
@@ -448,6 +468,39 @@ static void MX_UART5_Init(void)
 }
 
 /**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -464,10 +517,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Radio_RX_Pin|Buzzer_Gate_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, Radio_Enable_Pin|GPS_Reset_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, Radio_RX_Pin|Radio_Enable_Pin|GPS_Reset_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, Radio_Reset_Pin|Indicator_LED_Pin, GPIO_PIN_RESET);
@@ -480,25 +530,18 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : Radio_RX_Pin Radio_Enable_Pin GPS_Reset_Pin */
+  GPIO_InitStruct.Pin = Radio_RX_Pin|Radio_Enable_Pin|GPS_Reset_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pins : Radio_DIO1_Pin Radio_DIO0_Pin Radio_TX_Pin Mag_Data_Ready_Pin */
   GPIO_InitStruct.Pin = Radio_DIO1_Pin|Radio_DIO0_Pin|Radio_TX_Pin|Mag_Data_Ready_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : Radio_RX_Pin Buzzer_Gate_Pin */
-  GPIO_InitStruct.Pin = Radio_RX_Pin|Buzzer_Gate_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : Radio_Enable_Pin GPS_Reset_Pin */
-  GPIO_InitStruct.Pin = Radio_Enable_Pin|GPS_Reset_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Radio_Reset_Pin Indicator_LED_Pin */
   GPIO_InitStruct.Pin = Radio_Reset_Pin|Indicator_LED_Pin;

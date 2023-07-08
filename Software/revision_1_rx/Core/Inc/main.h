@@ -63,14 +63,12 @@ void Error_Handler(void);
 #define Gyro_Int3_GPIO_Port GPIOC
 #define Radio_DIO2_Pin GPIO_PIN_1
 #define Radio_DIO2_GPIO_Port GPIOC
+#define Radio_RX_Pin GPIO_PIN_2
+#define Radio_RX_GPIO_Port GPIOC
 #define Radio_DIO1_Pin GPIO_PIN_0
 #define Radio_DIO1_GPIO_Port GPIOA
 #define Radio_DIO0_Pin GPIO_PIN_1
 #define Radio_DIO0_GPIO_Port GPIOA
-#define Radio_RX_Pin GPIO_PIN_2
-#define Radio_RX_GPIO_Port GPIOA
-#define Buzzer_Gate_Pin GPIO_PIN_3
-#define Buzzer_Gate_GPIO_Port GPIOA
 #define Radio_TX_Pin GPIO_PIN_4
 #define Radio_TX_GPIO_Port GPIOA
 #define Radio_SPI1_SCK_Pin GPIO_PIN_5
