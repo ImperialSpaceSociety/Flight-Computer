@@ -1,0 +1,3 @@
+../Core/Src/w25qxx/qspi.c:53:9:qspi_init	24	static,ignoring_inline_asm
+../Core/Src/w25qxx/qspi.c:110:9:qspi_write_read	72	static
+../Core/Src/w25qxx/qspi.c:315:9:qspi_deinit	8	static

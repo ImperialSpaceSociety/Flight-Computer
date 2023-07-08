@@ -1,0 +1,8 @@
+driver_w25qxx_basic.c:51:9:w25qxx_basic_init	7
+driver_w25qxx_basic.c:125:9:w25qxx_basic_deinit	2
+driver_w25qxx_basic.c:144:9:w25qxx_basic_power_down	2
+driver_w25qxx_basic.c:163:9:w25qxx_basic_wake_up	2
+driver_w25qxx_basic.c:182:9:w25qxx_basic_chip_erase	2
+driver_w25qxx_basic.c:203:9:w25qxx_basic_get_id	2
+driver_w25qxx_basic.c:225:9:w25qxx_basic_write	2
+driver_w25qxx_basic.c:247:9:w25qxx_basic_read	2

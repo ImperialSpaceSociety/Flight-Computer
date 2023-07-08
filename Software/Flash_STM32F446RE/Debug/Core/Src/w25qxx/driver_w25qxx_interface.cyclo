@@ -1,0 +1,6 @@
+driver_w25qxx_interface.c:50:9:w25qxx_interface_spi_qspi_init	1
+driver_w25qxx_interface.c:62:9:w25qxx_interface_spi_qspi_deinit	1
+driver_w25qxx_interface.c:88:9:w25qxx_interface_spi_qspi_write_read	1
+driver_w25qxx_interface.c:106:6:w25qxx_interface_delay_ms	1
+driver_w25qxx_interface.c:116:6:w25qxx_interface_delay_us	1
+driver_w25qxx_interface.c:126:6:w25qxx_interface_debug_print	1

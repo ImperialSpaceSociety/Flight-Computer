@@ -1,0 +1,11 @@
+../Core/Src/w25qxx_spi/spi.c:50:16:a_spi_cs_init	40	static
+../Core/Src/w25qxx_spi/spi.c:77:9:spi_init	16	static
+../Core/Src/w25qxx_spi/spi.c:128:9:spi_deinit	8	static
+../Core/Src/w25qxx_spi/spi.c:151:9:spi_write_cmd	24	static
+../Core/Src/w25qxx_spi/spi.c:188:9:spi_write	24	static
+../Core/Src/w25qxx_spi/spi.c:237:9:spi_write_address16	24	static
+../Core/Src/w25qxx_spi/spi.c:286:9:spi_read_cmd	24	static
+../Core/Src/w25qxx_spi/spi.c:323:9:spi_read	24	static
+../Core/Src/w25qxx_spi/spi.c:372:9:spi_read_address16	24	static
+../Core/Src/w25qxx_spi/spi.c:422:9:spi_transmit	40	static
+../Core/Src/w25qxx_spi/spi.c:460:9:spi_write_read	32	static

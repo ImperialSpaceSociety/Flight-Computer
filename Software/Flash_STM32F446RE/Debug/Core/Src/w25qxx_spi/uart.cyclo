@@ -1,0 +1,17 @@
+uart.c:69:9:uart_init	3
+uart.c:102:9:uart_deinit	2
+uart.c:122:9:uart_write	5
+uart.c:160:10:uart_read	3
+uart.c:190:10:uart_flush	1
+uart.c:204:10:uart_print	2
+uart.c:236:9:uart2_init	3
+uart.c:269:9:uart2_deinit	2
+uart.c:289:9:uart2_write	5
+uart.c:327:10:uart2_read	3
+uart.c:357:10:uart2_flush	1
+uart.c:370:21:uart_get_handle	1
+uart.c:380:21:uart2_get_handle	1
+uart.c:389:6:uart_set_tx_done	1
+uart.c:398:6:uart2_set_tx_done	1
+uart.c:407:6:uart_irq_handler	2
+uart.c:425:6:uart2_irq_handler	2

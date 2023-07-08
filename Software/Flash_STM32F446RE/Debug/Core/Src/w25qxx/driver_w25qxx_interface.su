@@ -1,0 +1,6 @@
+../Core/Src/w25qxx/driver_w25qxx_interface.c:50:9:w25qxx_interface_spi_qspi_init	8	static
+../Core/Src/w25qxx/driver_w25qxx_interface.c:62:9:w25qxx_interface_spi_qspi_deinit	8	static
+../Core/Src/w25qxx/driver_w25qxx_interface.c:88:9:w25qxx_interface_spi_qspi_write_read	56	static
+../Core/Src/w25qxx/driver_w25qxx_interface.c:106:6:w25qxx_interface_delay_ms	16	static
+../Core/Src/w25qxx/driver_w25qxx_interface.c:116:6:w25qxx_interface_delay_us	16	static
+../Core/Src/w25qxx/driver_w25qxx_interface.c:126:6:w25qxx_interface_debug_print	272	static
