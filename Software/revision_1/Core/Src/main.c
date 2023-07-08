@@ -239,35 +239,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
-	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
-	  unsigned int dataInt = *(unsigned int*)&gps.datetime;
-	  buf[0] = counter & 0xff;
-	  buf[1] = (counter >> 8) & 0xff;
-	  buf[2] = (counter >> 16) & 0xff;
-	  buf[3] = (counter >> 24) & 0xff;
-	  buf[4] = latitudeInt & 0xff;
-	  buf[5] = (latitudeInt >> 8) & 0xff;
-	  buf[6] = (latitudeInt >> 16) & 0xff;
-	  buf[7] = (latitudeInt >> 24) & 0xff;
-	  buf[8] = longitudeInt & 0xff;
-	  buf[9] = (longitudeInt >> 8) & 0xff;
-	  buf[10] = (longitudeInt >> 16) & 0xff;
-	  buf[11] = (longitudeInt >> 24) & 0xff;
-	  buf[12] = dataInt & 0xff;
-	  buf[13] = (dataInt >> 8) & 0xff;
-	  buf[14] = (dataInt >> 16) & 0xff;
-	  buf[15] = (dataInt >> 24) & 0xff;
-	  int ret = sx1272_transmit(&sx, buf);
-
-	sprintf(test_message, "Tx status: %d\r\n", ret);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "Datetime: %x\n\r", dataInt);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-//	sprintf(test_message, "Latitude: %x\n\r", latitudeInt);
-//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-//	sprintf(test_message, "Longitude: %x\n\r", longitudeInt);
-//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 
 	  rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, &dev);
 	  dev.delay_ms(40);
@@ -278,8 +249,6 @@ int main(void)
 		temperature = comp_data.temperature / 100.0;
 		humidity = comp_data.humidity / 1024.0;
 		pressure = comp_data.pressure / 10000.0;
-		sprintf(test_message, "temperature: %4.2f, humidity: %4.2f, pressure: %4.2f\r\n", temperature, humidity, pressure);
-		CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	  } else {
 //		  if (HAL_UART_Transmit(&huart2, "Error ", 6, 100)) {
 //			  Error_Handler();
@@ -287,10 +256,69 @@ int main(void)
 //		  }
 	  }
 
+	  unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
+	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
+	  unsigned int dateInt = *(unsigned int*)&gps.datetime;
+	  unsigned int tempInt = *(unsigned int*)&temperature;
+	  unsigned int humidityInt = *(unsigned int*)&humidity;
+	  unsigned int pressureInt = *(unsigned int*)&pressure;
+
+	  buf[0] = 0x10;
+	  buf[1] = 0x00;
+	  buf[2] = 0x00;
+	  buf[3] = 0x00;
+	  buf[4] = latitudeInt & 0xff;
+	  buf[5] = (latitudeInt >> 8) & 0xff;
+	  buf[6] = (latitudeInt >> 16) & 0xff;
+	  buf[7] = (latitudeInt >> 24) & 0xff;
+	  buf[8] = longitudeInt & 0xff;
+	  buf[9] = (longitudeInt >> 8) & 0xff;
+	  buf[10] = (longitudeInt >> 16) & 0xff;
+	  buf[11] = (longitudeInt >> 24) & 0xff;
+	  buf[12] = dateInt & 0xff;
+	  buf[13] = (dateInt >> 8) & 0xff;
+	  buf[14] = (dateInt >> 16) & 0xff;
+	  buf[15] = (dateInt >> 24) & 0xff;
+	  int ret = sx1272_transmit(&sx, buf);
+
+	HAL_Delay(100);
+
+	  buf[0] = 0x20;
+	  buf[1] = 0x00;
+	  buf[2] = 0x00;
+	  buf[3] = 0x00;
+	  buf[4] = tempInt & 0xff;
+	  buf[5] = (tempInt >> 8) & 0xff;
+	  buf[6] = (tempInt >> 16) & 0xff;
+	  buf[7] = (tempInt >> 24) & 0xff;
+	  buf[8] = humidityInt & 0xff;
+	  buf[9] = (humidityInt >> 8) & 0xff;
+	  buf[10] = (humidityInt >> 16) & 0xff;
+	  buf[11] = (humidityInt >> 24) & 0xff;
+	  buf[12] = pressureInt & 0xff;
+	  buf[13] = (pressureInt >> 8) & 0xff;
+	  buf[14] = (pressureInt >> 16) & 0xff;
+	  buf[15] = (pressureInt >> 24) & 0xff;
+	  ret = sx1272_transmit(&sx, buf);
+
+	sprintf(test_message, "Tx status: %d\r\n", ret);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "Datetime: %x\n\r", dateInt);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "temperature: %4.2f, humidity: %4.2f, pressure: %4.2f\r\n", temperature, humidity, pressure);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "temperature: %x, humidity: %x, pressure: %x\r\n", tempInt, humidityInt, pressureInt);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "Latitude: %x\n\r", latitudeInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "Longitude: %x\n\r", longitudeInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+
 
 	HAL_Delay(100);
 	counter++;
-	if(counter == 200) {
+	// Buzzer will start in 30min
+	if(counter == 18000) {
 		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	}
   }
