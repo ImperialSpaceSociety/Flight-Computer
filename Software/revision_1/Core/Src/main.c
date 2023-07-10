@@ -317,8 +317,8 @@ int main(void)
 
 	HAL_Delay(100);
 	counter++;
-	// Buzzer will start in 30min
-	if(counter == 18000) {
+	// Buzzer will start in 15min //4500
+	if(counter == 4500) {
 		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	}
   }

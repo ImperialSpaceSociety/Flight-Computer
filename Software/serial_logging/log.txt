@@ -1,0 +1,791 @@
+RX status: 0
+Temperature: 28.190001
+Humidity: 53.264648
+Pressure: 1007.580688
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.190001
+Humidity: 53.219727
+Pressure: 1007.569702
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.200001
+Humidity: 53.196289
+Pressure: 1007.564575
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.200001
+Humidity: 53.174805
+Pressure: 1007.555420
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -106
+SNR: 9
+RX status: 0
+Temperature: 28.209999
+Humidity: 53.164062
+Pressure: 1007.552002
+RSSI: -105
+SNR: 8
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -108
+SNR: 8
+RX status: 0
+Temperature: 28.209999
+Humidity: 53.153320
+Pressure: 1007.544373
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 6.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.209999
+Humidity: 53.095703
+Pressure: 1007.539307
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.219999
+Humidity: 53.083984
+Pressure: 1007.531799
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -112
+SNR: 9
+RX status: 0
+Temperature: 28.219999
+Humidity: 53.062500
+Pressure: 1007.525024
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.230000
+Humidity: 53.074219
+Pressure: 1007.519470
+RSSI: -106
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.230000
+Humidity: 53.097656
+Pressure: 1007.512695
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.240000
+Humidity: 53.122070
+Pressure: 1007.505981
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.240000
+Humidity: 53.167969
+Pressure: 1007.500793
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.250000
+Humidity: 53.248047
+Pressure: 1007.495728
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 8.800000
+RSSI: -112
+SNR: 9
+RX status: 0
+Temperature: 28.250000
+Humidity: 53.374023
+Pressure: 1007.489014
+RSSI: -108
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.260000
+Humidity: 53.466797
+Pressure: 1007.480591
+RSSI: -108
+SNR: 8
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.260000
+Humidity: 53.569336
+Pressure: 1007.472107
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.270000
+Humidity: 53.569336
+Pressure: 1007.465271
+RSSI: -106
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.270000
+Humidity: 53.582031
+Pressure: 1007.456970
+RSSI: -106
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.280001
+Humidity: 53.572266
+Pressure: 1007.450195
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 11.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.280001
+Humidity: 53.492188
+Pressure: 1007.439209
+RSSI: -106
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.280001
+Humidity: 53.469727
+Pressure: 1007.435913
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.290001
+Humidity: 53.401367
+Pressure: 1007.434509
+RSSI: -108
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -106
+SNR: 9
+RX status: 0
+Temperature: 28.290001
+Humidity: 53.402344
+Pressure: 1007.432678
+RSSI: -108
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -108
+SNR: 8
+RX status: 0
+Temperature: 28.299999
+Humidity: 53.391602
+Pressure: 1007.431030
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.299999
+Humidity: 53.334961
+Pressure: 1007.426697
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.309999
+Humidity: 53.278320
+Pressure: 1007.426697
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.309999
+Humidity: 53.233398
+Pressure: 1007.425781
+RSSI: -106
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 13.800000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.309999
+Humidity: 53.165039
+Pressure: 1007.424072
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 16.799000
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 28.320000
+Humidity: 53.107422
+Pressure: 1007.418518
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 16.799000
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 28.320000
+Humidity: 53.063477
+Pressure: 1007.418518
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 16.799000
+RSSI: -110
+RX status: 0
+Temperature: 29.190001
+Humidity: 50.783203
+Pressure: 1005.929199
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235943.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.190001
+Humidity: 50.817383
+Pressure: 1005.924988
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235943.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.200001
+Humidity: 50.783203
+Pressure: 1005.917480
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235943.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.200001
+Humidity: 50.748047
+Pressure: 1005.909912
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235943.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.200001
+Humidity: 50.726562
+Pressure: 1005.908081
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -106
+SNR: 9
+RX status: 0
+Temperature: 29.209999
+Humidity: 50.726562
+Pressure: 1005.903870
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.209999
+Humidity: 50.659180
+Pressure: 1005.904602
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.209999
+Humidity: 50.624023
+Pressure: 1005.913818
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.219999
+Humidity: 50.556641
+Pressure: 1005.927124
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.219999
+Humidity: 50.510742
+Pressure: 1005.934570
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -106
+SNR: 9
+RX status: 0
+Temperature: 29.219999
+Humidity: 50.488281
+Pressure: 1005.900208
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.230000
+Humidity: 50.510742
+Pressure: 1005.915222
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235946.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.230000
+Humidity: 50.500000
+Pressure: 1005.926025
+RSSI: -108
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235948.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.230000
+Humidity: 50.535156
+Pressure: 1005.881592
+RSSI: -105
+SNR: 10
+RX status: 0
+Temperature: -14073910.000000
+Humidity: -0.000000
+Pressure: 2705.864014
+RSSI: -12
+SNR: 0
+RX status: 0
+Temperature: 29.240000
+Humidity: 50.627930
+Pressure: 1005.812988
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235948.796875
+RSSI: -108
+SNR: 10
+RX status: 0
+Temperature: 29.240000
+Humidity: 50.684570
+Pressure: 1005.773499
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235948.796875
+RSSI: -110
+SNR: 10
+RX status: 0
+Temperature: 29.240000
+Humidity: 50.696289
+Pressure: 1005.747498
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235948.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.240000
+Humidity: 50.696289
+Pressure: 1005.706421
+RSSI: -110
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235948.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.250000
+Humidity: 50.719727
+Pressure: 1005.663513
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.250000
+Humidity: 50.708984
+Pressure: 1005.620728
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -110
+SNR: 10
+RX status: 0
+Temperature: 29.250000
+Humidity: 50.685547
+Pressure: 1005.566101
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -110
+SNR: 10
+RX status: 0
+Temperature: 29.250000
+Humidity: 50.629883
+Pressure: 1005.498108
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -110
+SNR: 10
+RX status: 0
+Temperature: 29.260000
+Humidity: 50.595703
+Pressure: 1005.390686
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -108
+SNR: 10
+RX status: 0
+Temperature: 29.260000
+Humidity: 50.561523
+Pressure: 1005.317627
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.260000
+Humidity: 50.539062
+Pressure: 1005.281494
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235951.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.270000
+Humidity: 50.539062
+Pressure: 1005.270630
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.270000
+Humidity: 50.504883
+Pressure: 1005.269592
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.270000
+Humidity: 50.471680
+Pressure: 1005.279602
+RSSI: -105
+SNR: 10
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -108
+SNR: 9
+RX status: 0
+Temperature: 29.280001
+Humidity: 50.471680
+Pressure: 1005.290527
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -106
+SNR: 10
+RX status: 0
+Temperature: 29.280001
+Humidity: 50.471680
+Pressure: 1005.308105
+RSSI: -105
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -106
+SNR: 9
+RX status: 0
+Temperature: 29.280001
+Humidity: 50.483398
+Pressure: 1005.327271
+RSSI: -106
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235953.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.280001
+Humidity: 50.483398
+Pressure: 1005.351624
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235956.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.290001
+Humidity: 50.483398
+Pressure: 1005.381714
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235956.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.290001
+Humidity: 50.483398
+Pressure: 1005.407898
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235956.796875
+RSSI: -110
+SNR: 9
+RX status: 0
+Temperature: 29.299999
+Humidity: 50.427734
+Pressure: 1005.437988
+RSSI: -104
+SNR: 9
+RX status: 0
+Latitude: 0.000000
+Longitude: 0.000000
+Datetime: 235956.796875
+RSSI: -108
+SNR: 10
