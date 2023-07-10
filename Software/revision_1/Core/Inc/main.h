@@ -49,6 +49,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -69,8 +71,6 @@ void Error_Handler(void);
 #define Radio_DIO0_GPIO_Port GPIOA
 #define Radio_RX_Pin GPIO_PIN_2
 #define Radio_RX_GPIO_Port GPIOA
-#define Buzzer_Gate_Pin GPIO_PIN_3
-#define Buzzer_Gate_GPIO_Port GPIOA
 #define Radio_TX_Pin GPIO_PIN_4
 #define Radio_TX_GPIO_Port GPIOA
 #define Radio_SPI1_SCK_Pin GPIO_PIN_5
