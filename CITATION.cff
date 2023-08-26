@@ -1,0 +1,19 @@
+cff-version: 1.0.0
+message: "Repository with design files and code for Imperial College Space Society flight computer."
+authors:
+- family-names: "Pavlíček"
+  given-names: "Václav"
+- family-names: "Newman"
+  given-names: "Timothy"
+- family-names: "Hu"
+  given-names: "Richard"
+- family-names: "Liu"
+  given-names: "Benny"
+- family-names: "Alsteens"
+  given-names: "Lou"
+- family-names: "Jędrzejewski"
+  given-names: "Jakub" 
+title: "Flight computer"
+version: 1.0.0
+date-released: 2023-07-09
+url: "https://github.com/ImperialSpaceSociety/Flight-Computer"
