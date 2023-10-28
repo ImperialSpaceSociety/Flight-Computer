@@ -41,7 +41,8 @@ osStatus dlog(const char *format, ...) {
     p[len] = '\r';
     p[len + 1] = '\n';
     p[len + 2] = '\0';
-    ret = osMessagePut(printQueueHandle, (uint32_t)p, CONSOLE_TIMEOUT_MS);
+    ret = 0;
+    //ret = osMessagePut(printQueueHandle, (uint32_t)p, CONSOLE_TIMEOUT_MS);
   }
 
   va_end(args);

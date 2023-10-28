@@ -23,12 +23,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "sx1272.h"
+#include "Console.h"
+#include "L80M39/L80M39.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define BUFFER_LENGTH 600
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -50,19 +52,25 @@ QSPI_HandleTypeDef hqspi;
 SPI_HandleTypeDef hspi1;
 
 UART_HandleTypeDef huart5;
-UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_uart5_rx;
 
 osThreadId consoleTaskHandle;
 osThreadId radioTaskHandle;
 osThreadId buzzerTaskHandle;
+osThreadId gpsTaskHandle;
 osMessageQId printQueueHandle;
 /* USER CODE BEGIN PV */
-
+L80M39_t gps;
+uint8_t UART1_rxBuffer[BUFFER_LENGTH] = {};
+//sx1272_t sx;
+//sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
+uint8_t buf[256] = {};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_QUADSPI_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
@@ -70,10 +78,17 @@ static void MX_ADC1_Init(void);
 static void MX_UART5_Init(void);
 static void MX_USART1_UART_Init(void);
 void ConsoleTask(void const * argument);
-extern void RadioTask(void const * argument);
+void RadioTask(void const * argument);
 extern void BuzzerTask(void const * argument);
+void GPSTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
+	dlog(DLOG_INFO "dat: %.2f lat: %.8f lon: %.8f", gps.datetime, gps.latitude, gps.longitude);
+	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+}
 
 /* USER CODE END PFP */
 
@@ -130,6 +145,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_QUADSPI_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
@@ -137,7 +153,39 @@ int main(void)
   MX_UART5_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
+  //HAL_GPIO_WritePin(Radio_Reset_GPIO_Port, Radio_Reset_Pin, 0);
+  //HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
 
+  /*L80M39_init(&gps);
+  sx1272_t sx;
+	sx_gpio_t sx_cs_gpio, sx_tx_gpio, sx_rx_gpio;
+
+	sx_cs_gpio = (sx_gpio_t) {
+		.port = Radio_Enable_GPIO_Port,
+		.pin = Radio_Enable_Pin,
+	};
+
+	sx_tx_gpio = (sx_gpio_t) {
+		.port = Radio_TX_GPIO_Port,
+		.pin = Radio_TX_Pin,
+	};
+
+	sx_rx_gpio = (sx_gpio_t) {
+		.port = Radio_RX_GPIO_Port,
+		.pin = Radio_RX_Pin,
+	};
+
+	// Init device structure
+
+	sx = (sx1272_t) {
+			.spi = &hspi1,
+			.cs_gpio = &sx_cs_gpio,
+			.tx_gpio = &sx_tx_gpio,
+			.rx_gpio = &sx_rx_gpio,
+			.packet_length = 16,
+	};
+	int status = sx1272_common_init(&sx, false);*/
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -173,6 +221,10 @@ int main(void)
   /* definition and creation of buzzerTask */
   osThreadDef(buzzerTask, BuzzerTask, osPriorityLow, 0, 128);
   buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
+
+  /* definition and creation of gpsTask */
+  osThreadDef(gpsTask, GPSTask, osPriorityNormal, 0, 128);
+  gpsTaskHandle = osThreadCreate(osThread(gpsTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -278,7 +330,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
-  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Channel = ADC_CHANNEL_14;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
@@ -383,7 +435,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -414,7 +466,7 @@ static void MX_UART5_Init(void)
 
   /* USER CODE END UART5_Init 1 */
   huart5.Instance = UART5;
-  huart5.Init.BaudRate = 115200;
+  huart5.Init.BaudRate = 9600;
   huart5.Init.WordLength = UART_WORDLENGTH_8B;
   huart5.Init.StopBits = UART_STOPBITS_1;
   huart5.Init.Parity = UART_PARITY_NONE;
@@ -432,35 +484,18 @@ static void MX_UART5_Init(void)
 }
 
 /**
-  * @brief USART1 Initialization Function
-  * @param None
-  * @retval None
+  * Enable DMA controller clock
   */
-static void MX_USART1_UART_Init(void)
+static void MX_DMA_Init(void)
 {
 
-  /* USER CODE BEGIN USART1_Init 0 */
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
 
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
+  /* DMA interrupt init */
+  /* DMA1_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
 
 }
 
@@ -484,10 +519,10 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOA, Radio_RX_Pin|Buzzer_Gate_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, Radio_Reset_Pin|Indicator_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, Radio_Enable_Pin|GPS_Reset_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, Radio_Reset_Pin|Indicator_LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : Acc_Int1_Pin Gyro_Int3_Pin */
   GPIO_InitStruct.Pin = Acc_Int1_Pin|Gyro_Int3_Pin;
@@ -508,19 +543,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : Radio_Enable_Pin GPS_Reset_Pin */
+  GPIO_InitStruct.Pin = Radio_Enable_Pin|GPS_Reset_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
   /*Configure GPIO pins : Radio_Reset_Pin Indicator_LED_Pin */
   GPIO_InitStruct.Pin = Radio_Reset_Pin|Indicator_LED_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : GPS_Reset_Pin */
-  GPIO_InitStruct.Pin = GPS_Reset_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPS_Reset_GPIO_Port, &GPIO_InitStruct);
 
 }
 
@@ -546,6 +581,61 @@ __weak void ConsoleTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_RadioTask */
+/**
+* @brief Function implementing the radioTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_RadioTask */
+void RadioTask(void const * argument)
+{
+  /* USER CODE BEGIN RadioTask */
+  unsigned int counter = 0;
+  /* Infinite loop */
+  for(;;)
+  {
+	  /*unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
+	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
+	  buf[0] = counter & 0xff;
+	  buf[1] = (counter >> 8) & 0xff;
+	  buf[2] = (counter >> 16) & 0xff;
+	  buf[3] = (counter >> 24) & 0xff;
+	  buf[4] = latitudeInt & 0xff;
+	  buf[5] = (latitudeInt >> 8) & 0xff;
+	  buf[6] = (latitudeInt >> 16) & 0xff;
+	  buf[7] = (latitudeInt >> 24) & 0xff;
+	  buf[8] = longitudeInt & 0xff;
+	  buf[9] = (longitudeInt >> 8) & 0xff;
+	  buf[10] = (longitudeInt >> 16) & 0xff;
+	  buf[11] = (longitudeInt >> 24) & 0xff;
+	  int ret = sx1272_transmit(&sx, buf);*/
+	  dlog(DLOG_INFO "Tx status");
+	  counter++;
+	  osDelay(1000);
+  }
+  /* USER CODE END RadioTask */
+}
+
+/* USER CODE BEGIN Header_GPSTask */
+/**
+* @brief Function implementing the gpsTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_GPSTask */
+void GPSTask(void const * argument)
+{
+  /* USER CODE BEGIN GPSTask */
+  /* Infinite loop */
+  for(;;)
+  {
+	  //osDelay(10000);
+	  osDelay(1000);
+  }
+  /* USER CODE END GPSTask */
 }
 
 /**

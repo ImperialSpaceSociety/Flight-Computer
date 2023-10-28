@@ -53,7 +53,6 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
@@ -96,10 +95,6 @@ void Error_Handler(void);
 #define Flash_QUADSPI_BK1_IO1_GPIO_Port GPIOC
 #define GPS_Reset_Pin GPIO_PIN_11
 #define GPS_Reset_GPIO_Port GPIOC
-#define GPS_UART_TX_Pin GPIO_PIN_12
-#define GPS_UART_TX_GPIO_Port GPIOC
-#define GPS_UART_RX_Pin GPIO_PIN_2
-#define GPS_UART_RX_GPIO_Port GPIOD
 #define Flash_QUADSPI_BK1_NCS_Pin GPIO_PIN_6
 #define Flash_QUADSPI_BK1_NCS_GPIO_Port GPIOB
 #define Indicator_LED_Pin GPIO_PIN_9
