@@ -240,11 +240,7 @@ sx_status_t sx1272_receive_continuous(sx1272_t *dev, uint8_t *buf, bool denyBadC
 
       //HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 
-<<<<<<< HEAD:Software/fcs-v2/Core/Src/sx1272/sx1272.c
-      if (osSignalWait(0x0001, BUSY_WAIT_DELAY).status == osEventSignal) {
-=======
       /*if (osSignalWait(0x0001, BUSY_WAIT_DELAY).status == osEventSignal) {
->>>>>>> integration:Software/revision_1/Core/Src/sx1272.c
         stop = 1;
       }*/
       flags = read_reg(dev, SxLoraRegIrqFlags);
