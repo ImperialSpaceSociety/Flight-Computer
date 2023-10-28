@@ -4,7 +4,7 @@ s = serialport("COM5", 115200);
 % use the STOP button to exit the while loop
 while true
     data_line = readline(s) % also print to the command window
-    writelines(data_line,"log6.txt",WriteMode="append"); % save to text file
+    writelines(data_line,"log7.txt",WriteMode="append"); % save to text file
 end
 
 

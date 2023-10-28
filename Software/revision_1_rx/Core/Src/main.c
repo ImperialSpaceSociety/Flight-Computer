@@ -183,19 +183,8 @@ int main(void)
 	sprintf(uart_buffer, "RX status: %d\r\n", ret);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 
-	unsigned int counter = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | buf[0];
-	unsigned int latitude = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
-	unsigned int longitude = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
-	unsigned int datetime = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
-//	unsigned int temp = (buf[19] << 24) | (buf[18] << 16) | (buf[17] << 8) | buf[16];
-//	unsigned int humidity = (buf[23] << 24) | (buf[22] << 16) | (buf[21] << 8) | buf[20];
-//	unsigned int pressure = (buf[27] << 24) | (buf[26] << 16) | (buf[25] << 8) | buf[24];
-	float latitudeFloat = *(float*)&latitude;
-	float longitudeFloat = *(float*)&longitude;
-	float datetimeFloat = *(float*)&datetime;
-//	float tempFloat = *(float*)&temp;
-//	float humidityFloat = *(float*)&humidity;
-//	float pressureFloat = *(float*)&pressure;
+	sprintf(uart_buffer, "BUF 0: %d\r\n", ret);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 
 //	printf("Counter: %x\n\r", counter);
 //	printf("Latitude: %x (%f)\n\r", latitude, latitudeFloat);
@@ -204,27 +193,70 @@ int main(void)
 	//sprintf(uart_buffer, "ID: %x\r\n", buf[0]);
 	//HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 	if (buf[0] == 0x10){
-//	sprintf(uart_buffer, "Counter: %x\r\n", counter);
-//	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+
+	unsigned int latitude = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
+	unsigned int longitude = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
+	unsigned int datetime = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
+	float latitudeFloat = *(float*)&latitude;
+	float longitudeFloat = *(float*)&longitude;
+	float datetimeFloat = *(float*)&datetime;
+
 	sprintf(uart_buffer, "Latitude: %f\r\n", latitudeFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 	sprintf(uart_buffer, "Longitude: %f\r\n", longitudeFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
 	sprintf(uart_buffer, "Datetime: %f\r\n", datetimeFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-	} else {
-	sprintf(uart_buffer, "Temperature: %f\r\n", latitudeFloat);
+	}
+	else if (buf[0] == 0x20) {
+
+	unsigned int temperature = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
+	unsigned int humidity = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
+	unsigned int pressure = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
+	float temperatureFloat = *(float*)&temperature;
+	float humidityFloat = *(float*)&humidity;
+	float pressureFloat = *(float*)&pressure;
+
+	sprintf(uart_buffer, "Temperature: %f\r\n", temperatureFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-	sprintf(uart_buffer, "Humidity: %f\r\n", longitudeFloat);
+	sprintf(uart_buffer, "Humidity: %f\r\n", humidityFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-	sprintf(uart_buffer, "Pressure: %f\r\n", datetimeFloat);
+	sprintf(uart_buffer, "Pressure: %f\r\n", pressureFloat);
 	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-//	sprintf(uart_buffer, "Temperaturehex: %x\r\n", latitude);
-//	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-//	sprintf(uart_buffer, "Humidityhex: %x\r\n", longitude);
-//	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
-//	sprintf(uart_buffer, "Pressurehex: %x\r\n", datetime);
-//	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);// Sending in normal mode
+	}
+	else if (buf[0] == 0x30) {
+
+	unsigned int ax = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
+	unsigned int ay = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
+	unsigned int az = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
+
+	float axFloat = *(float*)&ax;
+	float ayFloat = *(float*)&ay;
+	float azFloat = *(float*)&az;
+
+	sprintf(uart_buffer, "Ax: %f\r\n", axFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
+	sprintf(uart_buffer, "Ay: %f\r\n", ayFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
+	sprintf(uart_buffer, "Az: %f\r\n", azFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
+	}
+	else if (buf[0] == 0x40) {
+
+	unsigned int gx = (buf[7] << 24) | (buf[6] << 16) | (buf[5] << 8) | buf[4];
+	unsigned int gy = (buf[11] << 24) | (buf[10] << 16) | (buf[9] << 8) | buf[8];
+	unsigned int gz = (buf[15] << 24) | (buf[14] << 16) | (buf[13] << 8) | buf[12];
+
+	float gxFloat = *(float*)&gx;
+	float gyFloat = *(float*)&gy;
+	float gzFloat = *(float*)&gz;
+
+	sprintf(uart_buffer, "Gx: %f\r\n", gxFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
+	sprintf(uart_buffer, "Gy: %f\r\n", gyFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
+	sprintf(uart_buffer, "Gz: %f\r\n", gzFloat);
+	HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,strlen(uart_buffer),10);
 	}
 	//sprintf(test_message2, "Counter");
 	//CDC_Transmit_FS((uint8_t*) test_message2, strlen(test_message2));

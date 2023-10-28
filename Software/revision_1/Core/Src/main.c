@@ -28,6 +28,7 @@
 #include "sx1272.h"
 #include "L80M39.h"
 #include "bme280.h"
+#include "BMI088.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,9 +71,9 @@ float temperature;
 float humidity;
 float pressure;
 
-struct bme280_dev dev;
-struct bme280_data comp_data;
-int8_t rslt;
+struct bme280_dev dev_bme280;
+struct bme280_data comp_data_bme280;
+int8_t rslt_bme280;
 
 char hum_string[50];
 char temp_string[50];
@@ -95,8 +96,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	L80M39_parse(&gps, UART1_rxBuffer, BUFFER_LENGTH);
 	char test_message[50];
-	sprintf(test_message, "dat: %.2f lat: %.8f lon: %.8f", gps.datetime, gps.latitude, gps.longitude);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	//sprintf(test_message, "dat: %.2f lat: %.8f lon: %.8f", gps.datetime, gps.latitude, gps.longitude);
+	//CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
 }
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -176,28 +177,27 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  //__HAL_TIM_CLEAR_IT(&htim6, TIM_IT_UPDATE);
-  //HAL_TIM_Base_Start_IT(&htim6);
 
   /* BME280 init */
-    dev.dev_id = BME280_I2C_ADDR_PRIM;
-    dev.intf = BME280_I2C_INTF;
-    dev.read = user_i2c_read;
-    dev.write = user_i2c_write;
-    dev.delay_ms = user_delay_ms;
+    dev_bme280.dev_id = BME280_I2C_ADDR_PRIM;
+    dev_bme280.intf = BME280_I2C_INTF;
+    dev_bme280.read = user_i2c_read;
+    dev_bme280.write = user_i2c_write;
+    dev_bme280.delay_ms = user_delay_ms;
 
-    rslt = bme280_init(&dev);
+    rslt_bme280 = bme280_init(&dev_bme280);
 
     /* BME280 settings */
-    dev.settings.osr_h = BME280_OVERSAMPLING_1X;
-    dev.settings.osr_p = BME280_OVERSAMPLING_16X;
-    dev.settings.osr_t = BME280_OVERSAMPLING_2X;
-    dev.settings.filter = BME280_FILTER_COEFF_16;
-    rslt = bme280_set_sensor_settings(BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_FILTER_SEL, &dev);
+    dev_bme280.settings.osr_h = BME280_OVERSAMPLING_1X;
+    dev_bme280.settings.osr_p = BME280_OVERSAMPLING_16X;
+    dev_bme280.settings.osr_t = BME280_OVERSAMPLING_2X;
+    dev_bme280.settings.filter = BME280_FILTER_COEFF_16;
+    rslt_bme280 = bme280_set_sensor_settings(BME280_OSR_PRESS_SEL | BME280_OSR_TEMP_SEL | BME280_OSR_HUM_SEL | BME280_FILTER_SEL, &dev_bme280);
 
+    /* Radio INIT */
 	//HAL_GPIO_WritePin(Radio_Enable_GPIO_Port, Radio_Enable_Pin, SET);
 
-  sx_cs_gpio = (sx_gpio_t) {
+	sx_cs_gpio = (sx_gpio_t) {
 		.port = Radio_Enable_GPIO_Port,
 		.pin = Radio_Enable_Pin,
 	};
@@ -225,43 +225,80 @@ int main(void)
 	/*printf("tx (1), rx (2), tx_no_crc (3), echo_src (4), echo_wall (5) ? ");
 	fflush(stdout);*/
 	int status = sx1272_common_init(&sx, false);
+
+	/* GPS Init */
 	HAL_GPIO_WritePin(GPS_Reset_GPIO_Port, GPS_Reset_Pin, 1);
 	L80M39_init(&gps);
 	HAL_UART_Receive_DMA(&huart5, &UART1_rxBuffer[0], BUFFER_LENGTH);
+
+	/* BMI088 Init */
+    if (BMI088Check()) {
+    	BMI088SetAccRange(RANGE_3G);
+        BMI088Init();
+    } else {
+        // Error handling
+    }
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  // counter is used for delaying the start of buzzer
   unsigned int counter = 0;
+
+  // buffer for sending messages via USB conn
   char test_message[50];
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
-	  rslt = bme280_set_sensor_mode(BME280_FORCED_MODE, &dev);
-	  dev.delay_ms(40);
-	  /*Get Data */
-	  rslt = bme280_get_sensor_data(BME280_ALL, &comp_data, &dev);
-	  if(rslt == BME280_OK)
+	  /* BME280 data acquisition */
+	  rslt_bme280 = bme280_set_sensor_mode(BME280_FORCED_MODE, &dev_bme280);
+	  dev_bme280.delay_ms(40);
+	  rslt_bme280 = bme280_get_sensor_data(BME280_ALL, &comp_data_bme280, &dev_bme280);
+	  if(rslt_bme280 == BME280_OK)
 	  {
-		temperature = comp_data.temperature / 100.0;
-		humidity = comp_data.humidity / 1024.0;
-		pressure = comp_data.pressure / 10000.0;
+		temperature = comp_data_bme280.temperature / 100.0;
+		humidity = comp_data_bme280.humidity / 1024.0;
+		pressure = comp_data_bme280.pressure / 10000.0;
 	  } else {
+		  // Replace with proper error handling
 //		  if (HAL_UART_Transmit(&huart2, "Error ", 6, 100)) {
 //			  Error_Handler();
 //			  HAL_Delay(500);
 //		  }
 	  }
 
+      /* BMI088 data acquisition */
+      float ax = 0, ay = 0, az = 0;
+      float gx = 0, gy = 0, gz = 0;
+      int16_t temp = 0;
+
+      BMI088GetAccel(&ax, &ay, &az);
+      BMI088GetGyro(&gx, &gy, &gz);
+      temp = BMI088GetTemp();
+
+      // Conversion of data variable pointers into unsigned int for transmission
 	  unsigned int latitudeInt = *(unsigned int*)&gps.latitude;
 	  unsigned int longitudeInt = *(unsigned int*)&gps.longitude;
 	  unsigned int dateInt = *(unsigned int*)&gps.datetime;
 	  unsigned int tempInt = *(unsigned int*)&temperature;
 	  unsigned int humidityInt = *(unsigned int*)&humidity;
 	  unsigned int pressureInt = *(unsigned int*)&pressure;
+	  unsigned int axInt = *(unsigned int*)&ax;
+	  unsigned int ayInt = *(unsigned int*)&ay;
+	  unsigned int azInt = *(unsigned int*)&az;
+	  unsigned int gxInt = *(unsigned int*)&gx;
+	  unsigned int gyInt = *(unsigned int*)&gy;
+	  unsigned int gzInt = *(unsigned int*)&gz;
+
+	  // data has to be split into 2 batches for transmission
+	  // because buffer sent to SX1272 cannot  be more than 16 elements long
 
 	  buf[0] = 0x10;
 	  buf[1] = 0x00;
@@ -281,7 +318,7 @@ int main(void)
 	  buf[15] = (dateInt >> 24) & 0xff;
 	  int ret = sx1272_transmit(&sx, buf);
 
-	HAL_Delay(100);
+	HAL_Delay(50);
 
 	  buf[0] = 0x20;
 	  buf[1] = 0x00;
@@ -301,23 +338,66 @@ int main(void)
 	  buf[15] = (pressureInt >> 24) & 0xff;
 	  ret = sx1272_transmit(&sx, buf);
 
-	sprintf(test_message, "Tx status: %d\r\n", ret);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "Datetime: %x\n\r", dateInt);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "temperature: %4.2f, humidity: %4.2f, pressure: %4.2f\r\n", temperature, humidity, pressure);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
-	sprintf(test_message, "temperature: %x, humidity: %x, pressure: %x\r\n", tempInt, humidityInt, pressureInt);
-	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	HAL_Delay(50);
+
+	  buf[0] = 0x30;
+	  buf[1] = 0x00;
+	  buf[2] = 0x00;
+	  buf[3] = 0x00;
+	  buf[4] = axInt & 0xff;
+	  buf[5] = (axInt >> 8) & 0xff;
+	  buf[6] = (axInt >> 16) & 0xff;
+	  buf[7] = (axInt >> 24) & 0xff;
+	  buf[8] = ayInt & 0xff;
+	  buf[9] = (ayInt >> 8) & 0xff;
+	  buf[10] = (ayInt >> 16) & 0xff;
+	  buf[11] = (ayInt >> 24) & 0xff;
+	  buf[12] = azInt & 0xff;
+	  buf[13] = (azInt >> 8) & 0xff;
+	  buf[14] = (azInt >> 16) & 0xff;
+	  buf[15] = (azInt >> 24) & 0xff;
+	  ret = sx1272_transmit(&sx, buf);
+
+	HAL_Delay(50);
+
+	  buf[0] = 0x40;
+	  buf[1] = 0x00;
+	  buf[2] = 0x00;
+	  buf[3] = 0x00;
+	  buf[4] = gxInt & 0xff;
+	  buf[5] = (gxInt >> 8) & 0xff;
+	  buf[6] = (gxInt >> 16) & 0xff;
+	  buf[7] = (gxInt >> 24) & 0xff;
+	  buf[8] = gyInt & 0xff;
+	  buf[9] = (gyInt >> 8) & 0xff;
+	  buf[10] = (gyInt >> 16) & 0xff;
+	  buf[11] = (gyInt >> 24) & 0xff;
+	  buf[12] = gzInt & 0xff;
+	  buf[13] = (gzInt >> 8) & 0xff;
+	  buf[14] = (gzInt >> 16) & 0xff;
+	  buf[15] = (gzInt >> 24) & 0xff;
+	  ret = sx1272_transmit(&sx, buf);
+
+	  //Printing to USB for debugging
+//	sprintf(test_message, "Tx status: %d\r\n", ret);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "Datetime: %x\n\r", dateInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "temperature: %4.2f, humidity: %4.2f, pressure: %4.2f\r\n", temperature, humidity, pressure);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+//	sprintf(test_message, "temperature: %x, humidity: %x, pressure: %x\r\n", tempInt, humidityInt, pressureInt);
+//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 //	sprintf(test_message, "Latitude: %x\n\r", latitudeInt);
 //	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 //	sprintf(test_message, "Longitude: %x\n\r", longitudeInt);
-//	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "ax: %4.2f, ay: %4.2f, az: %4.2f\r\n", ax, ay, az);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
+	sprintf(test_message, "gx: %4.2f, gy: %4.2f, gz: %4.2f\r\n", gx, gy, gz);
+	CDC_Transmit_FS((uint8_t*) test_message, strlen(test_message));
 
-
-	HAL_Delay(100);
+	HAL_Delay(50);
 	counter++;
-	// Buzzer will start in 15min //4500
+	// Buzzer will start in 18min = 4500 counts * 240ms / 60 (total HAL delay; it is not very precise)
 	if(counter == 4500) {
 		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
 	}
