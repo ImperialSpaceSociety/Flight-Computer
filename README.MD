@@ -16,6 +16,22 @@ The following picture shows the 3D render of the flight computer designed in KiC
 
 ![Flight computer diagram](./Assets/PCB.png)
 
+## Receiver
+
+The table documents the connection of the radio module into STM32 F446RE Nucleo Board used as a receiver.
+
+| **Lambda 9D pin** | **STM32 Nucleo F446RE pin** |
+|-------------------|-----------------------------|
+| nSel - 16         |             GND             |
+| SDI - 15          |             PA7             |
+| SDO - 14          |             PA6             |
+| SCLK - 13         |             PA5             |
+| RESET - 12        |             PB12            |
+| GND - 2           |             GND             |
+| Vcc - 3           |             3V3             |
+| RX_SWITCH - 4     |             PC2             |
+| TX_SWITCH - 5     |             PA4             |
+
 ## Launch
 
 The rocket was successfully launched and recovered on 9th July 2023 in Twycross, Leicestershire. The rocket reached the altitude of 721 m after  s of flight.
@@ -33,13 +49,15 @@ The rocket was successfully launched and recovered on 9th July 2023 in Twycross,
 ## Repository content
 
 - `Assets` - This folder contains images and plots for the `README.md` file.
-- `Rocket` - This folder contains files simulation and design files for the rocket.
 - `Hardware/circuit board design v1.0` - First version of the hardware files of the flight computer.
-- `Hardware/circuit board design v2.1` - First version of the hardware files of the flight computer.
+- `Hardware/circuit board design v2.1` - Second version of the hardware files of the flight computer.
+- `Hardware/Documentation` - Documentation files with spreadsheets containing components selection and power consumption.
+- `Rocket` - This folder contains files simulation and design files for the rocket.
 - `References` - This folder contains datasheets and manuals relevant to the components used for the flight computer.
 - `Software/Dev board code` - This folder contains projects used to develop and test libraries for each of the components of the computer.
-- `Software/fcs-v2` - Second version of the flight computer software.
 - `Software/revision_1` - First version of the flight computer software.
+- `Software/revision_1_rx` - First version of the flight computer software.
+- `Software/serial_logging` - Code for the serial of the received data.
 
 ## Team
 
