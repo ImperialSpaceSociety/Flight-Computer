@@ -34,17 +34,17 @@ The table documents the connection of the radio module into STM32 F446RE Nucleo 
 
 ## Launch
 
-The rocket was successfully launched and recovered on 9th July 2023 in Twycross, Leicestershire. The rocket reached the altitude of 721 m after  s of flight.
+The rocket was successfully launched and recovered on 9th July 2023 in Twycross, Leicestershire. The rocket reached the altitude of 721 m after 11.4 s of flight.
 
 ![Flight computer diagram](./Assets/Altitude.png)
 
 ## Future improvements
 
-- UART connection 
-- Button/jumper pin header for reset
-- Code for magnetometer and flashchip
-- FreeRTOS
-- Datalog in MATLAB such that the incoming data is being processed and then saved
+- UART connection for debugging
+- Button/jumper pin header for resetting STM32
+- Code for IMU, magnetometer and flashchip
+- FreeRTOS for the flight computer
+- Modify serial logging script such that the incoming data is being processed and then saved as csv
 
 ## Repository content
 
@@ -56,10 +56,10 @@ The rocket was successfully launched and recovered on 9th July 2023 in Twycross,
 - `References` - This folder contains datasheets and manuals relevant to the components used for the flight computer.
 - `Software/Dev board code` - This folder contains projects used to develop and test libraries for each of the components of the computer.
 - `Software/revision_1` - First version of the flight computer software.
-- `Software/revision_1_rx` - First version of the flight computer software.
-- `Software/serial_logging` - Code for the serial of the received data.
+- `Software/revision_1_rx` - First version of the receiver software.
+- `Software/serial_logging` - Code for the serial logging of the received data.
 
-## Team
+## Team (Academic year 2022/2023)
 
 - Awais Khawaja (Rocket team lead)
 - Rohan Kukreti, Stephen Liu (Nose cone)
