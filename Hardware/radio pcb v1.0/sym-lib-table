@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name "Components")(type "KiCad")(uri "${KIPRJMOD}/Components.kicad_sym")(options "")(descr ""))
-  (lib (name "NCP161ASN180T1G")(type "KiCad")(uri "C:/Users/loual/OneDrive - Imperial College London/year3/space society/hpr/OBC_schematic/Flight-Computer/Hardware/References/power_management/component_librairies/power_supply/NCP161ASN180T1G.kicad_sym")(options "")(descr "")(disabled))
-)
