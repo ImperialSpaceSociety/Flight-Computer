@@ -66,7 +66,7 @@ The rocket was successfully launched and recovered on 9th July 2023 in Twycross,
 - Heather Boatin (Recovery system)
 - Denzel Goh, Dongxiao Jiang (Fins)
 - Jack Crane (Engine mount)
-- Timothy Newman, Lou Alsteens, and Jakub J\c edrzejewski (PCB)
+- Timothy Newman, Lou Alsteens, and Jakub Jędrzejewski (PCB)
 - Václav Pavlíček, Richard Hu, Benny Liu (Software)
 
 ## Acknowledgements
