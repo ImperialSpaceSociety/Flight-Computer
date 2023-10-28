@@ -28,6 +28,7 @@ The rocket was successfully launched and recovered on 9th July 2023 in Twycross,
 - Button/jumper pin header for reset
 - Code for magnetometer and flashchip
 - FreeRTOS
+- Datalog in MATLAB such that the incoming data is being processed and then saved
 
 ## Repository content
 
