@@ -55,24 +55,45 @@ plot(timeaxis, tableData.pressure, 'LineWidth',2)
 grid on
 grid minor
 title("Pressure [Pa]")
+
 figure(2)
 plot(timeaxis, tableData.humidity,'LineWidth',2)
 grid on
 grid minor
 title("Humidity [%RH]")
+
 figure(3)
 plot(timeaxis, tableData.temperature,'LineWidth',2)
 grid on
 grid minor
 title("Temperature [deg]")
+
 figure(4)
 plot(timeaxis, tableData.Distance, 'LineWidth',2)
 grid on
 grid minor
 title("Distance [m]")
+
 figure(5)
 geobasemap satellite
 geoplot(tableData.Latitude,tableData.Longitude,"r","LineWidth",2);
+
+% Height
+fig6 = figure(6)
+width = 800;  % Specify the figure width in pixels
+height = 600; % Specify the figure height in pixels
+set(fig6, 'Position', [100, 100, width, height]);
+
+T_0 = 295.8;
+R_d = 287.059;
+P_0 = 100603;
+g = 9.80665;
+plot(timeaxis, T_0/0.0065*(1-exp(0.0065*R_d/g*log(tableData.pressure/P_0))), 'LineWidth',3);
+ylabel('Height from ground level [m]', 'FontSize', 16); 
+xlabel('Time [s]', 'FontSize', 16); 
+grid on
+grid minor
+set(gca, 'FontSize', 12);
 
 % Display the table
 %disp(tableData);
