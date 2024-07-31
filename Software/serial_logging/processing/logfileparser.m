@@ -74,26 +74,28 @@ grid on
 grid minor
 title("Distance [m]")
 
-figure(5)
+fig5 = figure(5)
 geobasemap satellite
-geoplot(tableData.Latitude,tableData.Longitude,"r","LineWidth",2);
+geoplot(tableData.Latitude,tableData.Longitude,"r","LineWidth",3);
+set(fig5, 'Position', [1000, 1000, width, height]);
+set(gca, 'FontSize', 24);
 
 % Height
 fig6 = figure(6)
 width = 800;  % Specify the figure width in pixels
 height = 600; % Specify the figure height in pixels
-set(fig6, 'Position', [100, 100, width, height]);
+set(fig6, 'Position', [1000, 1000, width, height]);
 
 T_0 = 295.8;
 R_d = 287.059;
 P_0 = 100603;
 g = 9.80665;
-plot(timeaxis, T_0/0.0065*(1-exp(0.0065*R_d/g*log(tableData.pressure/P_0))), 'LineWidth',3);
-ylabel('Height from ground level [m]', 'FontSize', 16); 
-xlabel('Time [s]', 'FontSize', 16); 
+plot(timeaxis, T_0/0.0065*(1-exp(0.0065*R_d/g*log(tableData.pressure/P_0))), 'LineWidth',5);
+ylabel('Height from ground level [m]', 'FontSize', 30); 
+xlabel('Time [s]', 'FontSize', 30); 
 grid on
 grid minor
-set(gca, 'FontSize', 12);
+set(gca, 'FontSize', 30);
 
 % Display the table
 %disp(tableData);
